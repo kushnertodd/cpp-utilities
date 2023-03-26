@@ -25,17 +25,21 @@ archive/
 backup/
 .git/
 history/
+CMakeFiles/
 html/
 .idea/
 jpg/
 latex/
 misc/
 OV2640/
+out/
 pixel5/
 RCS/
 runs/
 toshow/
 latex/
+x64-Debug/
+.vs/
 # Compiled Static libraries
 *.lai
 *.la
@@ -58,6 +62,7 @@ latex/
 *.out
 *.output
 *.swp
+Tutorial
 arg
 array
 assert
