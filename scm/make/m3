@@ -1,0 +1,40 @@
+CPP      = g++
+CPPFLAGS = -g -Wall
+PROGRAM  = UserName
+INCFILES = UserName.h
+SRCFILES = UserName.cpp UserNameTest.cpp 
+OBJFILES = $(SRCFILES:%.cpp=%.o)
+TSTAMP  := $(shell date "+%F.%H-%M-%S")
+
+all: $(PROGRAM)
+
+%.o: %.cpp %.h
+	$(CPP)	-c $(CPPFLAGS) $< -o $@
+
+$(PROGRAM): $(OBJFILES)
+	$(CPP) $^ -o $@
+
+run: $(PROGRAM)
+	./$(PROGRAM) | tee $(PROGRAM).txt
+
+v: vim
+vi: vim
+vim:
+	vim -o2 "+set number" *.txt *.cpp *.h
+
+backup:
+	mkdir -p archive/backup/$(TSTAMP);echo archiving to archive/backup/$(TSTAMP)
+
+depend:
+	makedepend -- $(CPPFLAGS) -- -Y $(SRCFILES)
+
+clean:
+	rm -f $(OBJFILES)
+
+clobber: clean
+	rm -f $(PROGRAM) 
+
+# DO NOT DELETE
+
+UserName.o: UserName.h
+UserNameTest.o: UserName.h

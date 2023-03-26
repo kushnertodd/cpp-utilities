@@ -22,6 +22,7 @@
 
 # Dirs we don't want
 archive/
+backup/
 .git/
 history/
 html/
