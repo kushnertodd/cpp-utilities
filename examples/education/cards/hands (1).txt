@@ -1,0 +1,321 @@
+dealing 20 hands
+hand 1:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 2:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 3:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 4:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 5:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 6:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 7:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 8:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 9:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 10:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 11:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 12:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 13:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 14:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 15:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 16:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 17:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 18:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 19:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+
+hand 20:
+You have A THREE_FLUSH:
+    NINE  of DIAMONDS 
+    SIX   of HEARTS  
+    KING  of DIAMONDS 
+    QUEEN of HEARTS  
+    SEVEN of HEARTS  
+
+You have A THREE_FLUSH:
+    SEVEN of DIAMONDS          
+    QUEEN of CLUBS             
+    TWO   of DIAMONDS          
+    FOUR  of CLUBS             
+    ACE   of CLUBS             
+
+

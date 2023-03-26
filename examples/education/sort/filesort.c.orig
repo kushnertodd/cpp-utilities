@@ -1,0 +1,14 @@
+
+#include <stdio.h>
+#include <string.h>
+int main(int argc, char **argv)
+{
+FILE *f = fopen("file", "r");
+if (f == NULL)
+{
+  printf("cannot open file '%s': %s\n", file, strerror(errno));
+  exit(1);
+} 
+char *l = fgets(f);
+printf("line is: %s\n", l);
+}

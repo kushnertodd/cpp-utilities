@@ -1,0 +1,279 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define DECK_SIZE 52
+#define HAND_SIZE 5
+#define NUM_RANKS 13
+#define NUM_SUITS 4
+#define NUM_HAND_TYPES 14
+#define TRUE 1
+#define FALSE 0
+#define BOOLEAN int
+
+// card types
+
+// rank of cards Ace - King (though Ace can go low or high in a poker hand)
+typedef enum {
+  ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK,
+  QUEEN, KING
+} Rank;
+
+const char* rank_names[NUM_RANKS] =
+{ "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT",
+  "NINE", "TEN", "JACK", "QUEEN", "KING"
+};
+
+typedef enum {
+  CLUBS, DIAMONDS, HEARTS, SPADES
+} Suit;
+
+const char* suit_names[NUM_SUITS] =
+{ "CLUBS", "DIAMONDS", "HEARTS", "SPADES" };
+
+typedef enum {
+  STRAIGHT_FLUSH, FOUR_OF_A_KIND, FULL_HOUSE, FLUSH, STRAIGHT,
+  THREE_OF_A_KIND, TWO_PAIR, ONE_PAIR, FOUR_FLUSH, THREE_FLUSH,
+  FOUR_STRAIGHT, THREE_STRAIGHT, BUPKISS, NO_TYPE
+} HandType;
+
+const char* type_names[NUM_HAND_TYPES] =
+{
+  "A STRAIGHT_FLUSH", "FOUR_OF_A_KIND", "A FULL_HOUSE", "A FLUSH",
+  "A STRAIGHT", "THREE_OF_A_KIND", "TWO_PAIR", "ONE_PAIR",
+  "A FOUR_FLUSH", "A THREE_FLUSH", "A FOUR_STRAIGHT",
+  "A THREE_STRAIGHT", "NADA", "NO_TYPE"
+};
+
+// deck/card types
+
+// Playing card = (suit, rank)
+class Card {
+public:
+  Suit suit;
+  Rank rank;
+// format card into string
+  void format(char card_string[]) {
+    sprintf(card_string, "%-5s of %s ",
+            rank_names[rank], suit_names[suit]);
+  }
+
+};
+
+// this is a hand being played
+class Hand {
+public:
+  Card cards[HAND_SIZE];
+  int rank_ct[NUM_RANKS];
+  int max_rank;
+  int suit_ct[NUM_SUITS];
+  int max_suit;
+  HandType type;
+
+// count the ranks of cards in a hand (rank_count[NUM_RANKS])
+  void count_ranks() {
+    // set up the rank counts
+    max_rank = 0;
+    for (int i = 0; i < NUM_RANKS; i++)
+      rank_ct[i] = 0;
+    // count the hand ranks
+    for (int i = 0; i < HAND_SIZE; i++) {
+      rank_ct[cards[i].rank]++;
+      if (rank_ct[cards[i].rank] > max_rank)
+        max_rank = rank_ct[cards[i].rank];
+    }
+  }
+
+// count the suits of cards in a hand (suit_count[NUM_SUITS])
+  void count_suits() {
+    // set up the suit counts
+    max_suit = 0;
+    for (int i = 0; i < NUM_SUITS; i++)
+      suit_ct[i] = 0;
+    // count the hand suits
+    for (int i = 0; i < HAND_SIZE; i++) {
+      suit_ct[cards[i].suit]++;
+      if (suit_ct[cards[i].suit] > max_suit)
+        max_suit = suit_ct[cards[i].suit];
+    }
+  }
+
+// detect if hand is a flush
+  HandType flush_type() {
+    // check for a flush
+    count_suits();
+    if (max_suit == 5)
+      return FLUSH;
+    if (max_suit == 4)
+      return FOUR_FLUSH;
+    if (max_suit == 3)
+      return THREE_FLUSH;
+    return NO_TYPE;
+  }
+
+// detect multiples
+  HandType multiple_type() {
+    // check for a pair
+    BOOLEAN saw_three = FALSE;
+    int pair_ct = 0;
+    for (int i = 0; i < NUM_RANKS; i++) {
+      if (rank_ct[i] == 4)
+        return FOUR_OF_A_KIND;
+      else if (rank_ct[i] == 3)
+        saw_three == true;
+      else if (rank_ct[i] == 2)
+        pair_ct++;
+    }
+    if (saw_three && pair_ct)
+      return FULL_HOUSE;
+    else if (pair_ct == 2)
+      return TWO_PAIR;
+    else if (pair_ct == 1)
+      return ONE_PAIR;
+    else
+      return NO_TYPE;
+  }
+
+// detect straight
+  HandType straight_type() {
+    // check for a straight
+    count_ranks();
+    BOOLEAN saw_straight = FALSE;
+    int seq_ct = 0;
+    int max_seq = 0;
+    for (int i = 0; i < NUM_RANKS; i++)
+      if (rank_ct[i] == 1) {
+        seq_ct++;
+        if (seq_ct > max_seq)
+          max_seq = seq_ct;
+      } else
+        seq_ct = 0;
+    if (max_seq == 5)
+      return STRAIGHT;
+    else if (max_seq == 4)
+      return FOUR_STRAIGHT;
+    else if (max_seq == 3)
+      return THREE_STRAIGHT;
+    return NO_TYPE;
+  }
+
+  void evaluate_hand() {
+    HandType flushType = flush_type();
+    HandType straightType = straight_type();
+    HandType multipleType = multiple_type();
+    if (flushType == FLUSH && straightType == STRAIGHT)
+      type =  STRAIGHT_FLUSH;
+    else if (multipleType == FOUR_OF_A_KIND)
+      type =  FOUR_OF_A_KIND;
+    else if (multipleType == FULL_HOUSE)
+      type =  FULL_HOUSE;
+    else if (flushType == FLUSH)
+      type =  FLUSH;
+    else if (straightType == STRAIGHT)
+      type =  STRAIGHT;
+    else if (multipleType == THREE_OF_A_KIND)
+      type =  THREE_OF_A_KIND;
+    else if (multipleType == TWO_PAIR)
+      type =  TWO_PAIR;
+    else if (multipleType == ONE_PAIR)
+      type =  ONE_PAIR;
+    else if (flushType == FOUR_FLUSH || flushType == THREE_FLUSH)
+      type =  flushType;
+    else if (straightType == FOUR_STRAIGHT ||
+             straightType == THREE_STRAIGHT)
+      type =  straightType;
+    else
+      type =  BUPKISS;
+  }
+
+// format hand into string
+  void hand_format(char card_string[]) {
+    sprintf(card_string, "%s", type_names[type]);
+  }
+};
+
+// this is the deck being used
+class Deck {
+private:
+  Card cards[DECK_SIZE];
+  int size;
+
+public:
+// set up the deck
+  void init() {
+    srand((int)time(NULL));
+    size = DECK_SIZE;
+    for (int i = 0; i < NUM_SUITS; i++) {
+      for (int j = 0; j < NUM_RANKS; j++) {
+        int card_no = i * NUM_RANKS + j;
+        cards[card_no].suit = (Suit) i;
+        cards[card_no].rank = (Rank) j;
+      }
+    }
+  }
+
+// select card from deck[0:size-1], shuffle cards down, shrink size (which must be > 0), and return card
+  Card deal_card() {
+    // find card to return
+    int next_no = size * (rand() / ((double) RAND_MAX));
+    if (next_no < 0 || next_no > 51)
+      int c = 2;
+    Card next_card = cards[next_no];
+    if ((int) next_card.suit == 52)
+      int b=2;
+    for (int i = next_no; i < size - 1; i++)
+    {
+      cards[i] = cards[i+1];
+    }
+    //size = DECK_SIZE;
+    size--;
+    return next_card;
+  }
+
+// deal hand Card[HAND_SIZE] from deck[DECK_SIZE]
+  void deal_hand(Hand &hand) {
+    for (int i = 0; i < HAND_SIZE; i++) {
+      hand.cards[i] = deal_card();
+    }
+    hand.evaluate_hand();
+  }
+};
+
+int main(int argc, char** argv) {
+  Deck deck;
+  Hand hand1;
+  Hand hand2;
+  int type_ct[NUM_HAND_TYPES];
+  if (argc < 2) {
+    printf("usage: %s count\n", argv[0]);
+    exit(0);
+  }
+  int count = atoi(argv[1]);
+  printf("dealing %d hands\n", count);
+  for (int j = 0; j < count; j++) {
+    printf("hand %d:\n", j+1);
+    deck.init();
+    deck.deal_hand(hand1);
+    deck.deal_hand(hand2);
+    char card1_string[100];
+    char card2_string[100];
+    // show them their hand
+    hand1.hand_format(card1_string);
+    printf("You have %s:\n", card1_string);
+    for (int i = 0; i < HAND_SIZE; i++) {
+      hand1.cards[i].format(card1_string);
+      printf("    %-17s\n", card1_string);
+    }
+    printf("\n");
+    // show your hand
+    hand2.hand_format(card2_string);
+    printf("You have %s:\n", card2_string);
+    for (int i = 0; i < HAND_SIZE; i++) {
+      hand2.cards[i].format(card2_string);
+      printf("    %-27s\n", card2_string);
+    }
+    printf("\n\n");
+  }
+}
+
+
