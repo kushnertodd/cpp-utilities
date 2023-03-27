@@ -35,7 +35,7 @@ target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS})
 target_include_directories(Tutorial PUBLIC
                            "${PROJECT_BINARY_DIR}"
                            )
-target_include_directories(Tutorial PUBLIC
-                           "${PROJECT_BINARY_DIR}"
-                           ${EXTRA_INCLUDES}
-                           )
+#target_include_directories(Tutorial PUBLIC
+#                           "${PROJECT_BINARY_DIR}"
+#                           ${EXTRA_INCLUDES}
+#                           )

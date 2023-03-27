@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/c/Users/kushn/Dropbox/software/programming/c++/dev/cmake/cmake-3.26.1-tutorial-source/Step3/MathFunctions
+# Install script for directory: /mnt/c/Users/kushn/Dropbox/software/programming/c++/local/cpp-utilities/cmake/cmake-3.26.1-tutorial-source/Step3/MathFunctions
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

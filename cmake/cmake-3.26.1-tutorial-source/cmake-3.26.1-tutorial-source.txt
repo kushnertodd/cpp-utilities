@@ -1,0 +1,127 @@
+-------------
+Step1
+
+Step1/CMakeLists.txt
+Step1/TutorialConfig.h.in
+Step1/tutorial.cxx
+
+- windows
+
+ + build
+ 
+Step1/out/build/x64-Debug/cmake_install.cmake
+Step1/out/build/x64-Debug/TutorialConfig.h
+
+Step1/out/build/x64-Debug/Tutorial.exe
+Step1/out/build/x64-Debug/Tutorial.ilk
+Step1/out/build/x64-Debug/Tutorial.pdb
+
+- unix
+
+ + cmake ..
+
+Step1_build/cmake_install.cmake
+Step1_build/Makefile
+Step1_build/Tutorial
+Step1_build/TutorialConfig.h
+
+ + cmake --build .
+
+Step1_build/Tutorial
+
+-------------
+Step2
+
+Step2/CMakeLists.txt
+Step2/MathFunctions/CMakeLists.txt
+Step2/MathFunctions/MathFunctions.h
+Step2/MathFunctions/mysqrt.cxx
+Step2/tutorial.cxx
+Step2/TutorialConfig.h.in
+
+
+- windows
+
+ + build
+ 
+Step2/out/build/x64-Debug/MathFunctions/CMakeFiles/MathFunctions.dir/MathFunctions.pdb
+Step2/out/build/x64-Debug/MathFunctions/MathFunctions.lib
+Step2/out/build/x64-Debug/MathFunctions/cmake_install.cmake
+Step2/out/build/x64-Debug/Tutorial.exe
+Step2/out/build/x64-Debug/Tutorial.ilk
+Step2/out/build/x64-Debug/Tutorial.pdb
+Step2/out/build/x64-Debug/TutorialConfig.h
+Step2/out/build/x64-Debug/cmake_install.cmake
+
+- unix
+
+ + cmake ..
+
+Step2_build/cmake_install.cmake
+Step2_build/Makefile
+Step2_build/MathFunctions/cmake_install.cmake
+Step2_build/MathFunctions/Makefile
+Step2_build/TutorialConfig.h
+
+ + build
+
+Step2_build/MathFunctions/libMathFunctions.a
+Step2_build/Tutorial
+
+-------------
+Step3
+
+Step3/CMakeLists.txt
+Step3/MathFunctions/CMakeLists.txt
+Step3/MathFunctions/MathFunctions.h
+Step3/MathFunctions/mysqrt.cxx
+Step3/tutorial.cxx
+Step3/TutorialConfig.h.in
+
+
+- windows
+
+ + build
+ 
+Step3/out/build/x64-Debug/MathFunctions/CMakeFiles/MathFunctions.dir/MathFunctions.pdb
+Step3/out/build/x64-Debug/MathFunctions/MathFunctions.lib
+Step3/out/build/x64-Debug/MathFunctions/cmake_install.cmake
+Step3/out/build/x64-Debug/Tutorial.exe
+Step3/out/build/x64-Debug/Tutorial.pdb
+Step3/out/build/x64-Debug/TutorialConfig.h
+Step3/out/build/x64-Debug/cmake_install.cmake
+
+
+- unix
+
+ + cmake ..
+ 
+Step3_build/CMakeCache.txt
+Step3_build/cmake_install.cmake
+Step3_build/Makefile
+Step3_build/MathFunctions/cmake_install.cmake
+Step3_build/MathFunctions/Makefile
+Step3_build/TutorialConfig.h
+
+
+ + cmake --build .
+
+
+Step3_build/MathFunctions/libMathFunctions.a
+Step3_build/Tutorial
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
