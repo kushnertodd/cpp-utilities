@@ -63,7 +63,7 @@ Step2_build/MathFunctions/cmake_install.cmake
 Step2_build/MathFunctions/Makefile
 Step2_build/TutorialConfig.h
 
- + build
+ + cmake --build .
 
 Step2_build/MathFunctions/libMathFunctions.a
 Step2_build/Tutorial
@@ -96,7 +96,6 @@ Step3/out/build/x64-Debug/cmake_install.cmake
 
  + cmake ..
  
-Step3_build/CMakeCache.txt
 Step3_build/cmake_install.cmake
 Step3_build/Makefile
 Step3_build/MathFunctions/cmake_install.cmake
@@ -109,6 +108,48 @@ Step3_build/TutorialConfig.h
 
 Step3_build/MathFunctions/libMathFunctions.a
 Step3_build/Tutorial
+
+
+
+
+-------------
+Step4
+
+Step4/CMakeLists.txt
+Step4/MathFunctions/CMakeLists.txt
+Step4/MathFunctions/MathFunctions.h
+Step4/MathFunctions/mysqrt.cxx
+Step4/tutorial.cxx
+Step4/TutorialConfig.h.in
+
+- windows
+
+ + build
+ 
+Step4/out/build/x64-Debug/cmake_install.cmake
+Step4/out/build/x64-Debug/MathFunctions/CMakeFiles/MathFunctions.dir/MathFunctions.pdb
+Step4/out/build/x64-Debug/MathFunctions/cmake_install.cmake
+Step4/out/build/x64-Debug/MathFunctions/MathFunctions.lib
+Step4/out/build/x64-Debug/Tutorial.exe
+Step4/out/build/x64-Debug/Tutorial.pdb
+Step4/out/build/x64-Debug/TutorialConfig.h
+
+- unix
+
+ + cmake ..
+ 
+  + cmake --build .
+
+
+
+
+
+codemonkey
+
+
+
+
+
 
 
 
