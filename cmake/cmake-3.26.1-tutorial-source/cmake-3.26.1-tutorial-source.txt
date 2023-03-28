@@ -138,6 +138,13 @@ Step4/out/build/x64-Debug/TutorialConfig.h
 
  + cmake ..
  
+Step4_build/CMakeFiles/cmake.check_cache
+Step4_build/cmake_install.cmake
+Step4_build/Makefile
+Step4_build/MathFunctions/cmake_install.cmake
+Step4_build/MathFunctions/Makefile
+Step4_build/TutorialConfig.h
+ 
   + cmake --build .
 
 
