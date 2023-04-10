@@ -1,0 +1,6 @@
+// the configured options and settings for Tutorial
+#define tokenize_test_VERSION_MAJOR @tokenize_test_VERSION_MAJOR@
+#define tokenize_test_VERSION_MINOR @tokenize_test_VERSION_MINOR@
+
+//  use cmakedefine to define USE_MY_TOKENIZE
+#cmakedefine USE_MY_TOKENIZE

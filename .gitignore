@@ -21,8 +21,11 @@
 *.smod
 
 # Dirs we don't want
+CMakeCache.txt  
+CMakeFiles/
 archive/
 backup/
+build/
 .git/
 history/
 CMakeFiles/
