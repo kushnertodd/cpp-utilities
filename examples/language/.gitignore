@@ -42,9 +42,11 @@ static_array
 static_helper
 static_member
 statics
+std_array
 strcompare
 stringfind
 stringfind_substr
+stringmalloc
 stringstl
 stringstream
 strtok
