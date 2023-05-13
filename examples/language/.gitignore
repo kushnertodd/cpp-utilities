@@ -53,3 +53,6 @@ strtok
 template
 tokenize
 unique_ptr
+obj
+strncpy
+time
