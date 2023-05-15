@@ -2,11 +2,13 @@ arg
 array
 assert
 bitset
+class_addr 
 comma-format
 comma-format2
 comma-format3
 construct
 construct_copy
+copy_char
 destructor
 destructor_vec
 directory
@@ -30,6 +32,7 @@ multiline
 my_namespace
 new
 no_assert
+obj
 ofstream
 parsedigits
 ref
@@ -49,10 +52,9 @@ stringfind_substr
 stringmalloc
 stringstl
 stringstream
+strncpy
 strtok
 template
+time
 tokenize
 unique_ptr
-obj
-strncpy
-time
