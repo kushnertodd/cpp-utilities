@@ -26,5 +26,7 @@ int main() {
   static_cast<int>(Warning::orange)==2;
   static_cast<int>(Warning::red)==5;
   printf("red %d\n", static_cast<int>(Warning::red));
+  Warning w1 = static_cast<Warning>(999); // error : 999 is not a char value (maybe not caught)
   //std::cout << "red " << Warning::red << std::endl;
+int i = static_cast<int>(Flag::y); // i becomes 2
 }
