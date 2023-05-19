@@ -60,3 +60,4 @@ tokenize
 unique_ptr
 mktime
 operator1
+enum2
