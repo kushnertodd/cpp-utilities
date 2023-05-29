@@ -61,3 +61,5 @@ unique_ptr
 mktime
 operator1
 enum2
+str
+size
