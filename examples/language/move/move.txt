@@ -1,0 +1,151 @@
+  A a1(1);
+  -> constructor A(1) 
+illegal: A& a2(2);
+  A&& a3(3);
+  -> constructor A(3) 
+  A a4(a3);
+  -> copy constructor A(A& other.3) 
+  A& a5(a4);
+  -> move constructor A(A&& other.3) 
+  -> move assignment operator A& operator=(A&& other.3) 
+  -> move assignment operator A& operator=(A&& other.3) 
+illegal: A&& a6(a5);
+  A a6(A(6));
+  -> constructor A(6) 
+illegal: A& a7(A(7));
+  A&& a8(A(8));
+  -> constructor A(8) 
+  -> move constructor A(A&& other.8) 
+  -> move assignment operator A& operator=(A&& other.8) 
+  -> move assignment operator A& operator=(A&& other.8) 
+  A a6z(rval_to_rval(a8));
+  -> copy constructor A(A& other.8) 
+  -> rval_to_rval(A a.8) 
+  -> move constructor A(A&& other.8) 
+illegal: A& a7z(rval_to_rval(a6z));
+  A&& a8z(rval_to_rval(a6z));
+  -> copy constructor A(A& other.8) 
+  -> rval_to_rval(A a.8) 
+  -> move constructor A(A&& other.8) 
+  -> move constructor A(A&& other.8) 
+  -> move assignment operator A& operator=(A&& other.8) 
+  -> move assignment operator A& operator=(A&& other.8) 
+  const A a9(9);
+  -> constructor A(9) 
+  const A& a10(10);
+  -> constructor A(10) 
+  -> const copy constructor A(const A& other.10) 
+  -> move constructor A(A&& other.10) 
+  -> move assignment operator A& operator=(A&& other.10) 
+  -> move assignment operator A& operator=(A&& other.10) 
+  const A&& a11(11);
+  -> constructor A(11) 
+  const A a12(a11);
+  -> const copy constructor A(const A& other.11) 
+  const A& a13(a12);
+  -> const copy constructor A(const A& other.11) 
+  -> move constructor A(A&& other.11) 
+  -> move assignment operator A& operator=(A&& other.11) 
+  -> move assignment operator A& operator=(A&& other.11) 
+illegal: A&& a14(a13);
+  const A a15(A(15));
+  -> constructor A(15) 
+illegal: A& a16(A(16));
+  const A&& a17(A(17));
+  -> constructor A(17) 
+  -> const copy constructor A(const A& other.17) 
+  -> move constructor A(A&& other.17) 
+  -> move assignment operator A& operator=(A&& other.17) 
+  -> move assignment operator A& operator=(A&& other.17) 
+  const A a18(A(18));
+  -> constructor A(18) 
+  const A&& a19(A(19));
+  -> constructor A(19) 
+  const A a20(rval_to_rval(a19));
+  -> const copy constructor A(const A& other.19) 
+  -> rval_to_rval(A a.19) 
+  -> move constructor A(A&& other.19) 
+  const A& a21(rval_to_rval(a20));
+  -> const copy constructor A(const A& other.19) 
+  -> rval_to_rval(A a.19) 
+  -> move constructor A(A&& other.19) 
+  const A&& a22(rval_to_rval(a21));
+  -> const copy constructor A(const A& other.19) 
+  -> rval_to_rval(A a.19) 
+  -> move constructor A(A&& other.19) 
+  -> const copy constructor A(const A& other.19) 
+  -> move constructor A(A&& other.19) 
+  -> move assignment operator A& operator=(A&& other.19) 
+  -> move assignment operator A& operator=(A&& other.19) 
+  A a23 = rval_to_rval(A(23));
+  -> constructor A(23) 
+  -> rval_to_rval(A a.23) 
+  -> move constructor A(A&& other.23) 
+  -> move constructor A(A&& other.23) 
+  -> move assignment operator A& operator=(A&& other.23) 
+  -> move assignment operator A& operator=(A&& other.23) 
+illegal: A& a24 = rval_to_rval(A(24));
+  A&& a25 = rval_to_rval(A(25));
+  -> constructor A(25) 
+  -> rval_to_rval(A a.25) 
+  -> move constructor A(A&& other.25) 
+  A a26 = ref_to_rval(a25);
+  -> ref_to_rval(A& a.25) 
+  -> copy constructor A(A& other.25) 
+illegal: A& a27 = ref_to_rval(a26);
+  A&& a28 = ref_to_rval(a26);
+  -> ref_to_rval(A& a.25) 
+  -> copy constructor A(A& other.25) 
+  -> move constructor A(A&& other.25) 
+  -> move assignment operator A& operator=(A&& other.25) 
+  -> move assignment operator A& operator=(A&& other.25) 
+  A a29 = rval_ref_to_rval(A(29));
+  -> constructor A(29) 
+  -> rval_ref_to_rval(A&& a.29) 
+  -> copy constructor A(A& other.29) 
+  -> move constructor A(A&& other.29) 
+  -> move assignment operator A& operator=(A&& other.29) 
+  -> move assignment operator A& operator=(A&& other.29) 
+illegal: A& a30 = rval_ref_to_rval(A(30));
+  A&& a31 = rval_ref_to_rval(A(31));
+  -> constructor A(31) 
+  -> rval_ref_to_rval(A&& a.31) 
+  -> copy constructor A(A& other.31) 
+  -> move constructor A(A&& other.31) 
+  -> move assignment operator A& operator=(A&& other.31) 
+  -> move assignment operator A& operator=(A&& other.31) 
+  A a32 = rval_to_rval_ref(A(32));
+  infinite loop: 
+      -> constructor A(32) 
+      -> rval_to_rval_ref(A&& a.32) 
+      -> copy constructor A(A& other.32) 
+      ...
+illegal: A& a33 = rval_to_rval_ref(A(33));
+  A&& a34 = rval_to_rval_ref(A(34));
+  infinite loop: 
+      -> constructor A(34) 
+      -> rval_to_rval_ref(A&& a.34) 
+      -> copy constructor A(A& other.34) 
+  A a35 = ref_to_rval_ref(a34);
+  -> ref_to_rval(A&& a.31) 
+  -> move constructor A(A&& other.31) 
+illegal: A& a36 = ref_to_rval_ref(a35);
+  A&& a37 = ref_to_rval_ref(a35);
+  -> ref_to_rval(A&& a.31) 
+  -> move constructor A(A&& other.31) 
+  -> move assignment operator A& operator=(A&& other.31) 
+  -> move assignment operator A& operator=(A&& other.31) 
+  A a38 = rval_ref_to_rval_ref(A(38));
+  -> constructor A(38) 
+  -> rval_ref_to_rval(A&& a.38) 
+  -> move constructor A(A&& other.38) 
+  -> move constructor A(A&& other.38) 
+  -> move assignment operator A& operator=(A&& other.38) 
+  -> move assignment operator A& operator=(A&& other.38) 
+illegal: A& a39 = rval_ref_to_rval_ref(A(39));
+  A&& a40 = rval_ref_to_rval_ref(A(40));
+  -> constructor A(40) 
+  -> rval_ref_to_rval(A&& a.40) 
+  -> move constructor A(A&& other.40) 
+  -> move assignment operator A& operator=(A&& other.40) 
+  -> move assignment operator A& operator=(A&& other.40) 
