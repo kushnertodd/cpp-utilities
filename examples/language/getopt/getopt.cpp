@@ -24,7 +24,7 @@ using Commandline_option_arguments =
 int
 main (int argc, char **argv)
 {
-  int aflag = 0;
+  int aflag = 0;}
   int bflag = 0;
   char *cvalue = NULL;
   int index;
