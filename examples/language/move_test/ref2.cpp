@@ -34,14 +34,14 @@ using Int_vec = std::vector<int>;
 using Int_vec_iter = Int_vec::iterator;
 using Int_list = std::list<int>;
 using Int_list_iter = Int_list::iterator;
-using Int_map = std::map<std::string, int>;
+using Int_map = std::map<int, int>;
 using Int_map_iter = Int_map::iterator;
 
 using A_vec = std::vector<A>;
 using A_vec_iter = A_vec::iterator;
 using A_list = std::list<A>;
 using A_list_iter = A_list::iterator;
-using A_map = std::map<std::string, A>;
+using A_map = std::map<int, A>;
 using A_map_iter = A_map::iterator;
 
 std::string prhex_int_vec(std::string msg, Int_vec_iter&& int_iter) {
@@ -77,8 +77,10 @@ std::string prhex_A_map(std::string msg, A_map_iter&& A_iter) {
 }
 
 A_list_iter my_find(A_list &a_list, int i) {
-  for (A_list_iter it = a_list.begin(); it != a_list.end(); it++)
+  for (A_list_iter it = a_list.begin(); it != a_list.end(); it++) {
+    std::cout << "my_find: checking " << i << " against " << *it << std::endl;
     if (it->i == i) return it;
+  }
   return a_list.end();
 }
 
@@ -88,13 +90,22 @@ A& my_find_a(A_list &a_list, int i) {
   return *a_list.end();
 }
 
+Int_map_iter my_find_map(Int_map &int_map, int i) {
+  for (Int_map_iter it = int_map.begin(); it != int_map.end(); it++) {
+    std::cout << "my_find_map: checking " << i << " against " << it->first << std::endl;
+    if (it->first == i) return it;
+  }
+  return int_map.end();
+}
+
+
 int main() {
   std::cout << "Int_vec int_vec = { 1, 2, 3 };" << std::endl;
   Int_vec int_vec = { 1, 2, 3 };
   std::cout << "Int_list int_list = { 1, 2, 3 };" << std::endl;
   Int_list int_list = { 1, 2, 3 };
-  std::cout << "Int_map int_map = { {\"1\", 1}, {\"2\", 2}, {\"3\", 3 }};" << std::endl;
-  Int_map int_map = { {"1", 1}, {"2", 2}, {"3", 3 }};
+  std::cout << "Int_map int_map = { {1, 1}, {2, 2}, {3, 3 }};" << std::endl;
+  Int_map int_map = { {1, 1}, {2, 2}, {3, 3 }};
   std::cout << prhex_int_vec("vec  ", int_vec.begin()) << std::endl;
   std::cout << prhex_int_list("list ", int_list.begin()) << std::endl;
   std::cout << prhex_int_map("map  ", int_map.begin()) << std::endl;
@@ -137,12 +148,23 @@ int main() {
 
   std::cout << "A_list_iter it_list_A = my_find(A_list, 3);" << std::endl;
   A_list_iter it_list_A = my_find(A_list, 3);
+  if (it_list_A == A_list.end())
+    std::cout << "nogots" << std::endl;
+  else
+    std::cout << "gots" << std::endl;
   std::cout << "*it_list_A " << *it_list_A << std::endl;
   std::cout << "A &a1 = *it_list_A;" << std::endl;
   A &a1 = *it_list_A;
   std::cout << "a1.i " << a1.i << std::endl;
+  A_list_iter it_list_AA = my_find(A_list, 9);
+  if (it_list_AA == A_list.end())
+    std::cout << "nogots" << std::endl;
+  else
+    std::cout << "gots" << std::endl;
 
-  std::cout << "A& A_ref = my_find1(A_list, 3);" << std::endl;
-  A& a_ref = my_find_a(A_list, 3);
-  std::cout << "a_ref.i " << a_ref.i << std::endl;
+  Int_map_iter it_map_int = my_find_map(int_map, 9);
+  if (it_map_int == int_map.end())
+    std::cout << "nogots" << std::endl;
+  else
+    std::cout << "gots" << std::endl;
 }
