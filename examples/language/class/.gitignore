@@ -1,0 +1,5 @@
+class_addr
+construct
+construct_copy
+destructor
+destructor_vec
