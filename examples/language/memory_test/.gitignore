@@ -1,4 +1,7 @@
+free
+new
 serializable
 str
 struct
 struct_ser
+unique_ptr
