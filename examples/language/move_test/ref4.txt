@@ -1,0 +1,21 @@
+A()  0x7ffc63564fc0 
+A(std::string 1) 0x7ffc63564fa0 1
+A(std::string 2) 0x7ffc63564f80 2
+A_rvalue(    A.s: 0x7ffc63564fc0 )     
+A(const A& 0x7ffc63564fc0 ) 0x7ffc63564f60 
+A_lvalue(    A.s: 0x7ffc63564fc0 )     
+A(const A& 0x7ffc63564fc0 ) 0x7ffc63564f40 
+A_rvalue(    A.s: 0x7ffc63564fc0 )     
+A(const A& 0x7ffc63564fc0 ) 0x7ffc63565040 
+A_rvalue_ref(A.s: 0x7ffc63565040 ) 
+A(const A& 0x7ffc63565040 ) 0x7ffc63564f20 
+~A() 0x7ffc63565040 
+A a3 = A_rvalue(    A.s: 0x7ffc63564fc0 ); -> 0x7ffc63564f60
+A a4 = A_rvalue(    A.s: 0x7ffc63564fc0 ); -> 0x7ffc63564f40
+A a5 = A_rvalue_ref(A.s: 0x7ffc63564fc0 ); -> 0x7ffc63564f20
+~A() 0x7ffc63564f20 
+~A() 0x7ffc63564f40 
+~A() 0x7ffc63564f60 
+~A() 0x7ffc63564f80 2
+~A() 0x7ffc63564fa0 1
+~A() 0x7ffc63564fc0 

@@ -1,0 +1,21 @@
+A()  0x7ffc21b3d3f8 0
+A(int 1) 0x7ffc21b3d3f4 1
+A(int 2) 0x7ffc21b3d3f0 2
+A_rvalue(    A.i: 0x7ffc21b3d3f8 0)     
+A(const A& 0x7ffc21b3d3f8 0) 0x7ffc21b3d3ec 0
+A_lvalue(    A.i: 0x7ffc21b3d3f8 0)     
+A(const A& 0x7ffc21b3d3f8 0) 0x7ffc21b3d3e8 0
+A_rvalue(    A.i: 0x7ffc21b3d3f8 0)     
+A(const A& 0x7ffc21b3d3f8 0) 0x7ffc21b3d3fc 0
+A_rvalue_ref(A.i: 0x7ffc21b3d3fc 0) 
+A(const A& 0x7ffc21b3d3fc 0) 0x7ffc21b3d3e4 0
+~A() 0x7ffc21b3d3fc 0
+A a3 = A_rvalue(    A.i: 0x7ffc21b3d3f8 0); -> 0x7ffc21b3d3ec
+A a4 = A_rvalue(    A.i: 0x7ffc21b3d3f8 0); -> 0x7ffc21b3d3e8
+A a5 = A_rvalue_ref(A.i: 0x7ffc21b3d3f8 0); -> 0x7ffc21b3d3e4
+~A() 0x7ffc21b3d3e4 0
+~A() 0x7ffc21b3d3e8 0
+~A() 0x7ffc21b3d3ec 0
+~A() 0x7ffc21b3d3f0 2
+~A() 0x7ffc21b3d3f4 1
+~A() 0x7ffc21b3d3f8 0

@@ -1,0 +1,6 @@
+A()  0x7ffc813be570 
+A_rvalue(    A.s: 0x7ffc813be570 )     
+A(const A& 0x7ffc813be570 ) 0x7ffc813be550 
+A a3 = A_rvalue(    A.s: 0x7ffc813be570 ); -> 0x7ffc813be550
+~A() 0x7ffc813be550 
+~A() 0x7ffc813be570 
