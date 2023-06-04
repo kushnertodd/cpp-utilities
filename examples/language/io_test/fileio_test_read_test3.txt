@@ -1,0 +1,13 @@
+test TEST3
+fileio_test: opening fileio.txt
+File_IO(fileio.txt)
+File_IO_text_read::File_IO_text_read(fileio.txt)
+File_IO_text_read::open(fileio.txt)
+File_IO::open(fileio.txt)
+fileio.txt:
+line 1
+line 2
+
+File_IO_text_read::~File_IO_text_read()
+File_IO_text_read::close()
+~File_IO()

@@ -1,0 +1,11 @@
+test TEST1
+fileio_test: opening fileiox.txt
+File_IO(fileiox.txt)
+File_IO_text_read::File_IO_text_read(fileiox.txt)
+File_IO_text_read::open(fileiox.txt)
+File_IO::open(fileiox.txt)
+File_IO::open_read[2]: fileiox.txt (Unknown error 2)
+
+File_IO_text_read::~File_IO_text_read()
+File_IO_text_read::close()
+~File_IO()

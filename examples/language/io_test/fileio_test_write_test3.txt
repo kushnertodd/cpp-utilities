@@ -1,0 +1,9 @@
+test TEST3
+fileio_test_write: opening fileio_out.txt
+File_IO(fileio_out.txt)
+File_IO_text_write::File_IO_text_write(fileio_out.txt)
+File_IO_text_write::open(fileio_out.txt)
+File_IO_text_write::~File_IO_text_write()
+File_IO_text_write::close(fileio_out.txt)
+File_IO::close()
+~File_IO()
