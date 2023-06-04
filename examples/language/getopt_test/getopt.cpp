@@ -27,15 +27,16 @@ main (int argc, char **argv)
   int aflag = 0;}
   int bflag = 0;
   char *cvalue = NULL;
-  int index;
+  int i;
   int c;
 
+/*
 Commandline_option_arguments commandline_option_arguments  =
 {
   {'e', {"env_home", Option_required::YES, Argument_required::YES, ""}}, 
   {'g', {"cache_gigabytes", Option_required::NO, Argument_required::NO, "4"}}
 }; 
-
+*/
 
   opterr = 0;
   while ((c = getopt (argc, argv, ":abc:")) != -1) {
@@ -67,7 +68,7 @@ Commandline_option_arguments commandline_option_arguments  =
   printf ("aflag = %d, bflag = %d, cvalue = %s\n",
           aflag, bflag, cvalue);
 
-  for (index = optind; index < argc; index++)
-    printf ("Non-option argument %s\n", argv[index]);
+  for (int i = optind; i < argc; i++)
+    printf ("Non-option argument %s\n", argv[i]);
   return 0;
 }
