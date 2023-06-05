@@ -2,20 +2,20 @@
 
 enum class Test { TEST1, TEST2, TEST3, TEST4 };
 std::string test_to_string(Test test) {
-  switch(test) {
-  case Test::TEST1:
-    return "TEST1";
-  case Test::TEST2:
-    return "TEST2";
-  case Test::TEST3:
-    return "TEST3";
-  case Test::TEST4:
-    return "TEST4";
+  switch (test) {
+    case Test::TEST1:
+      return "TEST1";
+    case Test::TEST2:
+      return "TEST2";
+    case Test::TEST3:
+      return "TEST3";
+    case Test::TEST4:
+      return "TEST4";
   }
   return "unknown test: " + std::to_string(static_cast<int>(test));
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   Errors errors;
   std::string filename;
   Test test = Test::TEST4;

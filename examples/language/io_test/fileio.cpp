@@ -16,7 +16,7 @@ void File_IO::close() {
 }
 
 void File_IO::open(const std::string &filename, Errors &errors) {
-  std::cout << "File_IO::open("<<filename<<")" << std::endl;
+  std::cout << "File_IO::open(" << filename << ")" << std::endl;
 }
 
 void File_IO::strerror_safe(char *buf, int buflen, int err_code) {
@@ -36,7 +36,7 @@ File_IO_text_read::File_IO_text_read(const std::string &filename, Errors &errors
   open(filename, errors);
 }
 
-void File_IO_text_read::close()  {
+void File_IO_text_read::close() {
   std::cout << "File_IO_text_read::close()" << std::endl;
   in_file.close();
 }
@@ -68,7 +68,7 @@ bool File_IO_text_read::getline(std::string &line, Errors &errors) {
   return true;
 }
 
-void File_IO_text_read::open(const std::string &filename, Errors &errors)  {
+void File_IO_text_read::open(const std::string &filename, Errors &errors) {
   std::cout << "File_IO_text_read::open(" << filename << ")" << std::endl;
   File_IO::open(filename, errors);
   in_file.open(filename);
@@ -98,7 +98,7 @@ File_IO_text_write::File_IO_text_write(const std::string &filename, Errors &erro
   open(filename, errors);
 }
 
-void File_IO_text_write::close()  {
+void File_IO_text_write::close() {
   std::cout << "File_IO_text_write::close(" << filename << ")" << std::endl;
   File_IO::close();
   out_file.close();
