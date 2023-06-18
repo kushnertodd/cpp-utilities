@@ -15,7 +15,7 @@
 
 class Bdb_db_config {
  private:
-  //Db db_;
+  Db db_;
   u_int32_t m_c_flags{};
   int m_cache_gbytes{4};
   int m_cache_bytes{};
@@ -47,5 +47,6 @@ class Bdb_db_config {
   Bdb_db_config &is_secondary();
   Bdb_db_config &truncate();
 
+  inline Db &get_db() { return db_; }
   void open(Bdb_Errors &errors);
 };

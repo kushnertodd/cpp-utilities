@@ -1,11 +1,6 @@
 #include "bdb_db.hpp"
-#include "bdb_env.hpp"
-#include "bdb_file_io.hpp"
-#include "bdb_global.hpp"
 
 Bdb_db::~Bdb_db() {
-  if (Bdb_global::debug)
-    std::cout << "Bdb_db::~Bdb_db: closing " << db_file_name << std::endl;
   close();
 }
 

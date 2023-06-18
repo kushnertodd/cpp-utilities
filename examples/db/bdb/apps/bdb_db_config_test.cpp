@@ -3,7 +3,7 @@
 #include "bdb_db_config.hpp"
 
 int main() {
-  Bdb_db_config bdb_db_config{Bdb_db_config::create("db_file.db")
+  Bdb_db_config &bdb_db_config{Bdb_db_config::create("db_file.db")
       .cache_gbytes(4)
       .cache_bytes(0)
       .can_create()

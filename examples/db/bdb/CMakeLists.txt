@@ -9,16 +9,17 @@ if (PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
     message(FATAL_ERROR "In-source builds are not allowed")
 endif ()
 
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module/")
+#list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module/")
 
 
 include_directories(bdb-lib)
 #include_directories(imdb-lib)
-#include_directories(util-lib)
+include_directories(util-lib)
 
 add_subdirectory(bdb-lib)
 #add_subdirectory(imdb-lib)
-#add_subdirectory(util-lib)
+add_subdirectory(util-lib)
 
 ## link libs
 
@@ -36,23 +37,21 @@ add_subdirectory(bdb-lib)
 # https://github.com/cloudshark/cshark/blob/master/build/modules/FindJSON-C.cmake
 #find_package(JSON-C REQUIRED)
 
-# https://github.com/sum01/FindBerkeleyDB
-#find_package(BerkeleyDB REQUIRED)
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/FindBerkeleyDB")
+#https://github.com/sum01/FindBerkeleyDB
+find_package(BerkeleyDB REQUIRED)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/FindBerkeleyDB")
 
 # bdb-tools
 #add_executable(bdb_tools apps/bdb_tools.cpp)
 add_executable(bdb_db_config_test apps/bdb_db_config_test.cpp)
-target_link_libraries(bdb_db_config_test PRIVATE bdb-lib)
-#target_link_libraries(bdb_tools
-        #PRIVATE bdb-lib util-lib
-        #PUBLIC Oracle::BerkeleyDB
+target_link_libraries(bdb_db_config_test
+        PRIVATE bdb-lib util-lib
+        PUBLIC Oracle::BerkeleyDB
         #PUBLIC ${JSON-C_LIBRARIES}
         #PUBLIC OpenSSL::SSL
         #PUBLIC OpenSSL::Crypto
         #PUBLIC Threads::Threads
-        #)
+        )
 
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 #include(Doxygen)
 #Doxygen(src docs)

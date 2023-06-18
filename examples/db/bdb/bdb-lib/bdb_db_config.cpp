@@ -14,7 +14,7 @@ Bdb_db_config::~Bdb_db_config() {
 
 Bdb_db_config::Bdb_db_config(std::string filename)
     :
-//db_(nullptr, 0),
+    db_(nullptr, 0),
     m_filename(std::move(filename)) {}
 
 Bdb_db_config Bdb_db_config::create(std::string filename) {
@@ -75,55 +75,48 @@ Bdb_db_config &Bdb_db_config::truncate() {
 void Bdb_db_config::close() {
   try {
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbclose.html
-//    if (m_is_open)
-//      db_.close(0);
+    if (m_is_open)
+      db_.close(0);
   }
   catch (DbException &e) {
-    std::cerr << "Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
+    std::cerr << "Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
   }
   catch (std::exception &e) {
-    std::cerr << "Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
+    std::cerr << "Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
   }
 }
 
 void Bdb_db_config::open(Bdb_Errors &errors) {
-/*
   try {
     // If this is a secondary database, support
     // sorted duplicates
 
-    int cache_gbytes = Bdb_env::get_cache_gbytes();
-    int cache_bytes = Bdb_env::get_cache_bytes();
-    int ret = db_.set_cachesize(cache_gbytes, cache_bytes, 1);
+    if (m_can_create)
+      m_c_flags = DB_CREATE;
+    int ret = db_.set_cachesize(m_cache_gbytes, m_cache_bytes, 1);
     if (ret)
       errors.add("BDB_db::open", "1", " set_cachesize error ", ret);
-    db_.set_error_stream(&std::cerr);
-    int ret1;
-    if (is_secondary)
-      ret1 = db_.set_flags(DB_DUPSORT);
-    else if (has_duplicates)
-      ret1 = db_.set_flags(DB_DUP);
-
-    // Open the database
-    // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbopen.html
     if (!errors.has()) {
-      m_is_opentrue
-    };
-    if (Bdb_global::debug)
-      std::cout << "Bdb_db::open(" << Bdb_file_IO::to_string(db_file_name) << ")" << std::endl;
-    ret = db_.open(nullptr, db_file_name.c_str(), nullptr, DB_BTREE, c_flags, 0);
-    if (ret)
-      errors.add("BDB_db::open", "2", db_file_name + " open error ", ret);
+      db_.set_error_stream(&std::cerr);
+      if (m_is_secondary)
+        ret = db_.set_flags(DB_DUPSORT);
+      else if (m_has_duplicates)
+        ret = db_.set_flags(DB_DUP);
+
+      // Open the database
+      // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbopen.html
+      ret = db_.open(nullptr, m_filename.c_str(), nullptr, DB_BTREE, m_c_flags, 0);
+      if (ret)
+        errors.add("BDB_db::open", "2", "Error opening database: " + m_filename, ret);
+      else
+        m_is_open = true;
+    }
   }
-}
-// DbException is not a subclass of std::exception, so we
-// need to catch them both.
-catch (DbException &e) {
-  errors.add("BDB_db::open", "3", db_file_name + " (" + e.what() + ")", e.get_errno());
-}
-catch (std::exception &e) {
-  errors.add("BDB_db::open", "4", db_file_name + " (" + e.what() + ")");
-}
+    // DbException is not a subclass of std::exception, so we need to catch them both.
+  catch (DbException &e) {
+    errors.add("BDB_db::open", "3", "Error opening database: " + m_filename + " (" + e.what() + ")", e.get_errno());
   }
-*/
+  catch (std::exception &e) {
+    errors.add("BDB_db::open", "4", "Error opening database: " + m_filename + " (" + e.what() + ")");
+  }
 }
