@@ -1,0 +1,21 @@
+void Title::load(Bdb_db *title_db, Bdb_db *title_tripthong_db, std::string &titles_tsv_file, Errors &errors) {
+  File_IO_text_read fread(titles_tsv_file, errors);
+  if (!errors.has()) {
+    std::string line;
+    for (int count = 0; fread.getline(line, errors) && !errors.has(); count++) {
+      File_IO::progress(count);
+      if (count > 0) {
+        Title title(line, count, errors);
+        if (!errors.has())
+          Bdb_common::db_add_record(title_db, title.title_id, line, errors);
+        if (!errors.has()) {
+          std::vector<std::string> &&tripthongs = Tokens::tripthongs(title.primaryTitle);
+          for (const std::string &tripthong: tripthongs)
+            if (!Tokens::in_tripthong_stoplist(tripthong))
+              Bdb_common::db_add_record(title_tripthong_db, tripthong, title.primaryTitle, errors);
+        }
+      }
+    }
+  }
+}
+

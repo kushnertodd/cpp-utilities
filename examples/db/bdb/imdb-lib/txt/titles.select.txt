@@ -1,0 +1,9 @@
+bool Titles::select(const std::string &title_id, Title &title) {
+  auto title_found = title_list.find(title_id);
+  if (title_found != title_list.end()) {
+    title = title_found->second;
+    return true;
+  } else
+    return false;
+}
+

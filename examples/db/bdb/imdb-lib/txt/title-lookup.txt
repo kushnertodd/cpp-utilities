@@ -1,0 +1,7 @@
+bool Title::lookup(Bdb_db *title_db, std::string &title_id_, Errors &errors) {
+  line = Bdb_common::db_read_record(title_db, title_id_, errors);
+  if (!errors.has())
+    parse(0, errors);
+  return (!errors.has());
+}
+

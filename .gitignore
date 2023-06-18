@@ -20,17 +20,19 @@
 *.mod
 *.smod
 
-# Dirs we don't want
-CMakeCache.txt  
-CMakeFiles/
+# Dirs/files we don't want
 archive/
 backup/
 build/
-.git/
+cmake-build-debug/
+CMakeCache.txt  
 CMakeFiles/
+CMakeFiles/
+.git/
 .idea/
-x64-Debug/
 .vs/
+x64-Debug/
+
 # Compiled Static libraries
 *.lai
 *.la

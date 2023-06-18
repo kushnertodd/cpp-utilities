@@ -1,0 +1,34 @@
+void Name_ids::select_all(Bdb_db *name_db, Errors &errors) {
+  Dbc *cursorp;
+
+  try {
+    int ret = name_db->getDb()->cursor(nullptr, &cursorp, 0);
+    if (ret)
+      errors.add("Name_ids::search", "1", "error creating cursor", ret);
+    else {
+      // Position the cursor to the first record in the secondary
+      // database that has the appropriate key.
+      Dbt data;
+      Dbt key;
+      for (ret = cursorp->get(&key, &data, DB_FIRST);
+           !ret && !errors.has();
+           ret = cursorp->get(&key, &data, DB_NEXT)) {
+        Name name(std::string((char *) data.get_data()), 0, errors);
+        if (!errors.has()) {
+          add(name.name_id);
+        }
+      }
+      if (ret && ret != DB_NOTFOUND) {
+        errors.add("Name_ids::select", "2", " select error", ret);
+      }
+      cursorp->close();
+    }
+  }
+  catch (DbException &e) {
+    errors.add("Name_ids::select", "3", " error: " + std::string(e.what()));
+  }
+  catch (std::exception &e) {
+    errors.add("Name_ids::select", "4", " error: " + std::string(e.what()));
+  }
+}
+

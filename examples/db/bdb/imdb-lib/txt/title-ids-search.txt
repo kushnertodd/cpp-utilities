@@ -1,0 +1,40 @@
+void Title_ids::search(Bdb_db *name_id_sdb, std::string &name_id_, Errors &errors) {
+  Dbc *cursorp;
+
+  try {
+    int ret = name_id_sdb->getDb()->cursor(nullptr, &cursorp, 0);
+    if (ret)
+      errors.add("Title_ids::search", "1", "error creating cursor", ret);
+    if (!errors.has()) {
+      // Get the search key. This is the name on the name
+      // record that we want to examine.
+      Dbt key((void *) name_id_.c_str(), (u_int32_t) name_id_.length() + 1);
+
+      // Position the cursor to the first record in the secondary
+      // database that has the appropriate key.
+      Dbt data;
+      for (ret = cursorp->get(&key, &data, DB_SET);
+           !ret && !errors.has();
+           ret = cursorp->get(&key, &data, DB_NEXT_DUP)) {
+        Principals principals(std::string((char *) data.get_data()), 0, errors);
+        if (!errors.has()) {
+          add(principals.title_id);
+        }
+      }
+      if (ret && ret != DB_NOTFOUND) {
+        errors.add("Title_ids::search", "2", "name " + name_id_ +
+            " search error", ret);
+      }
+      cursorp->close();
+    }
+  }
+  catch (DbException &e) {
+    errors.add("Title_ids::search", "3", "name " + name_id_ +
+        " error: " + std::string(e.what()));
+  }
+  catch (std::exception &e) {
+    errors.add("Title_ids::search", "4", "name " + name_id_ +
+        " error: " + std::string(e.what()));
+  }
+}
+

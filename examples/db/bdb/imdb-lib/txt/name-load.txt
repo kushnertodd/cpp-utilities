@@ -1,0 +1,18 @@
+void Name::load(Bdb_db *name_db, std::string &names_tsv_file, Errors &errors) {
+  File_IO_text_read fread(names_tsv_file, errors);
+  if (!errors.has()) {
+    std::string line;
+    for (int count = 0; fread.getline(line, errors) && !errors.has(); count++) {
+      File_IO::progress(count);
+      if (count > 0) {
+        Name name(line, count, errors);
+        if (!errors.has()) {
+          Bdb_common::db_add_record(name_db, name.name_id, line, errors);
+        } else {
+          errors.add("Name::load", "1", "invalid name line " + Tokens::line_print(count, line));
+        }
+      }
+    }
+  }
+}
+

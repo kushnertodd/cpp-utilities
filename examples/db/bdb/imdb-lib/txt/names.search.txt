@@ -1,0 +1,9 @@
+void Names::search(Bdb_db *title_id_sdb, Bdb_db *name_db,
+                   std::string title_id, Name_ids &missing_names,
+                   Errors &errors) {
+  Name_ids name_ids(title_id_sdb, title_id, errors);
+  if (!errors.has()) {
+    lookup(name_db, name_ids, missing_names, errors);
+  }
+}
+

@@ -1,0 +1,13 @@
+void Names::lookup(Bdb_db *name_db, Name_ids &name_ids,
+                   Name_ids &missing_names, Errors &errors) {
+  if (!errors.has()) {
+    for (std::string name_id: name_ids.name_id_list) {
+      Name name;
+      if (name.lookup(name_db, name_id, errors))
+        add(name);
+      else
+        missing_names.add(name_id);
+    }
+  }
+}
+

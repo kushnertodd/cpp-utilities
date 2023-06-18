@@ -1,0 +1,30 @@
+void Names::select_all(Bdb_db *name_db, Name_ids &missing_names, Errors &errors) {
+  Name_ids name_ids(name_db, errors);
+  if (!errors.has())
+    lookup(name_db, name_ids, missing_names, errors);
+}
+json_object *Names::to_json(Errors &errors) {
+  json_object *root = json_object_new_object();
+  if (!root) {
+    errors.add("Names::to_json", "1", "json-c allocate error");
+    return nullptr;
+  }
+  if (!errors.has()) {
+    json_object_object_add(root, "class_name", json_object_new_string(Names::class_name.c_str()));
+    json_object *json_names = json_object_new_array();
+    json_object_object_add(root, "names", json_names);
+    for (const auto &[name_id, name]: name_list) {
+      json_object *json_name = name.to_json(errors);
+      if (errors.has())
+        break;
+      json_object_array_add(json_names, json_name);
+    }
+  }
+  if (!errors.has()) {
+    return root;
+  } else {
+    json_object_put(root);
+    return nullptr;
+  }
+}
+

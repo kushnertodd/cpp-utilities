@@ -1,0 +1,6 @@
+void Titles::select_all(Bdb_db *title_db, Title_ids &missing_titles, Errors &errors) {
+  Title_ids title_ids(title_db, errors);
+  if (!errors.has())
+    lookup(title_db, title_ids, missing_titles, errors);
+}
+

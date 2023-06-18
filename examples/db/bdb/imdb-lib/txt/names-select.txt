@@ -1,0 +1,9 @@
+bool Names::select(const std::string &name_id, Name &name) {
+  auto name_found = name_list.find(name_id);
+  if (name_found != name_list.end()) {
+    name = name_found->second;
+    return true;
+  } else
+    return false;
+}
+

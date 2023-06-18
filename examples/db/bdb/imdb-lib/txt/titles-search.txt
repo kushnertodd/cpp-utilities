@@ -1,0 +1,17 @@
+void Titles::search(Bdb_db *name_id_sdb, Bdb_db *title_db,
+                    std::string &name_id, Title_ids &missing_titles,
+                    Errors &errors) {
+  Title_ids title_ids(name_id_sdb, name_id, errors);
+  if (!errors.has())
+    lookup(title_db, title_ids, missing_titles, errors);
+}
+
+bool Titles::select(const std::string &title_id, Title &title) {
+  auto title_found = title_list.find(title_id);
+  if (title_found != title_list.end()) {
+    title = title_found->second;
+    return true;
+  } else
+    return false;
+}
+
