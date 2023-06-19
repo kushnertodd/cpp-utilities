@@ -24,10 +24,10 @@ class Imdb_app_init {
   Imdb_app_init(int argc,
                 const char **argv,
                 Bdb_databases_config &bdb_databases_config,
-                Bdb_Errors &errors);
+                Bdb_errors &errors);
 
   void init(Bdb_databases_config &bdb_databases_config,
-            Bdb_Errors &errors);
+            Bdb_errors &errors);
   static void usage(const std::string &message = "");
 };
 

@@ -10,7 +10,7 @@ std::string Imdb_app_init::app_name{"etf_app"};
 Imdb_app_init::Imdb_app_init(int argc,
                              const char **argv,
                              Bdb_databases_config &bdb_databases_config,
-                             Bdb_Errors &errors) {
+                             Bdb_errors &errors) {
   // https://man7.org/linux/man-pages/man3/getopt.3.html
   int ch;
   while ((ch = getopt(argc, (char **) argv, ":b:d:e:f:g:h:z")) != EOF)
@@ -83,7 +83,7 @@ Imdb_app_init::Imdb_app_init(int argc,
 
 // https://cpp.hotexamples.com/examples/-/DbEnv/-/cpp-dbenv-class-examples.html
 void Imdb_app_init::init(Bdb_databases_config &bdb_databases_config,
-                         Bdb_Errors &errors) {
+                         Bdb_errors &errors) {
   std::string error_file = env_home + "/" + app_name + ".log";
   bdb_env.init(db_home, cache_gbytes, cache_bytes, error_file, errors);
   if (!errors.has())

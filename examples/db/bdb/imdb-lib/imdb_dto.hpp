@@ -13,17 +13,17 @@
  */
 class Imdb_DTO : public Serializable {
  public:
-  virtual void from_json(json_object *jobj, Bdb_Errors &errors) = 0;
-  virtual void parse(int count, const std::string &line, Bdb_Errors &errors) = 0;
-  virtual json_object *to_json(Bdb_Errors &errors) = 0;
+  virtual void from_json(json_object *jobj, Bdb_errors &errors) = 0;
+  virtual void parse(int count, const std::string &line, Bdb_errors &errors) = 0;
+  virtual json_object *to_json(Bdb_errors &errors) = 0;
   [[nodiscard]] virtual std::string to_string() = 0;
 };
 
 class Imdb_DTO_key : public Serializable {
  public:
-  virtual void from_json(json_object *jobj, Bdb_Errors &errors) = 0;
-  virtual void parse(int count, const std::string &line, Bdb_Errors &errors) = 0;
+  virtual void from_json(json_object *jobj, Bdb_errors &errors) = 0;
+  virtual void parse(int count, const std::string &line, Bdb_errors &errors) = 0;
 
-  virtual json_object *to_json(Bdb_Errors &errors) = 0;
+  virtual json_object *to_json(Bdb_errors &errors) = 0;
   [[nodiscard]] virtual std::string to_string() = 0;
 };

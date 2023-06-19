@@ -23,7 +23,7 @@ class Timer {
   [[nodiscard]] double cpu_milliseconds_seconds_used(int count = 1) const;
   void end();
   void start();
-  json_object *to_json(Bdb_Errors &errors, int count = 1);
+  json_object *to_json(Bdb_errors &errors, int count = 1);
   std::string to_string(int count = 1);
   double wall_clock_milliseconds_used(int count = 1);
 };

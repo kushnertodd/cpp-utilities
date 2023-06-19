@@ -15,7 +15,7 @@ Datetime::Datetime(std::tm *tm) {
 Datetime::Datetime(time_t epoch_time_) : epoch_time(epoch_time_) {}
 
 // default format is "mm/dd/yyyy"
-Datetime::Datetime(const std::string &date_time_str, Bdb_Errors &errors, const std::string &format) {
+Datetime::Datetime(const std::string &date_time_str, Bdb_errors &errors, const std::string &format) {
   from_string(date_time_str, errors, format);
 }
 
@@ -47,7 +47,7 @@ void *Datetime::deserialize(void *buffer) {
 }
 
 // default format is "mm/dd/yyyy"
-void Datetime::from_string(const std::string &date_time_str, Bdb_Errors &errors, const std::string &format) {
+void Datetime::from_string(const std::string &date_time_str, Bdb_errors &errors, const std::string &format) {
   struct std::tm when{};
   std::stringstream s(date_time_str);
   s >> std::get_time(&when, format.c_str());
@@ -113,7 +113,7 @@ std::string Datetime::to_string() {
   return os.str();
 }
 
-std::string Datetime::to_string(const std::string &format, Bdb_Errors &errors) {
+std::string Datetime::to_string(const std::string &format, Bdb_errors &errors) {
   std::ostringstream os;
   os << std::put_time(to_tm(), format.c_str());
   if (os.fail()) {

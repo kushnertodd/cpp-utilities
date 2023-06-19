@@ -21,7 +21,7 @@ enum class Imdb_DAO_function { read, write };
 template<typename T, typename K>
 class Imdb_DAO {
  public:
-  static int load(Bdb_db &imdb_db, const std::string &text_file, Bdb_Errors &errors, char delimiter = tab) {
+  static int load(Bdb_db &imdb_db, const std::string &text_file, Bdb_errors &errors, char delimiter = tab) {
     int count{};
     Bdb_File_IO_text_read fread(text_file, errors);
     if (!errors.has()) {
@@ -37,7 +37,7 @@ class Imdb_DAO {
     return count;
   }
 
-  static void lookup(Bdb_db &imdb_db, T &imdb_dto, K &imdb_key, Bdb_Errors &errors) {
+  static void lookup(Bdb_db &imdb_db, T &imdb_dto, K &imdb_key, Bdb_errors &errors) {
     void *key_buf;
     try {
       size_t key_len = imdb_key.buffer_size();
@@ -64,7 +64,7 @@ class Imdb_DAO {
     free(key_buf);
   }
 
-  static void save(Bdb_db &imdb_db, T &imdb_dto, Bdb_Errors &errors) {
+  static void save(Bdb_db &imdb_db, T &imdb_dto, Bdb_errors &errors) {
     void *key_buf;
     void *buffer;
     try {
@@ -102,7 +102,7 @@ class Imdb_DAO {
 template<typename K, typename L>
 class Imdb_DAO_list {
  public:
-  static void select(Bdb_db &imdb_db, L &imdb_dto_list, Bdb_Errors &errors) {
+  static void select(Bdb_db &imdb_db, L &imdb_dto_list, Bdb_errors &errors) {
     Dbc *cursorp;
 
     try {
@@ -145,7 +145,7 @@ class Imdb_DAO_search {
                      Bdb_db &imdb_sdb,
                      K &imdb_key,
                      L &imdb_dto_list,
-                     Bdb_Errors &errors) {
+                     Bdb_errors &errors) {
     Dbc *cursorp;
     void *key_buf;
     try {

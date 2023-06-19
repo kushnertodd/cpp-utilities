@@ -13,7 +13,7 @@ Title_DTO::Title_DTO(void *buffer) {
   deserialize(buffer);
 }
 
-Title_DTO::Title_DTO(int count, const std::string &line, Bdb_Errors &errors, char delimiter) {
+Title_DTO::Title_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
   parse(count, line, errors, delimiter);
 }
 
@@ -53,7 +53,7 @@ bool Title_DTO::equals(const Title_DTO &title) const {
       && genres == title.genres);
 }
 
-void Title_DTO::from_json(json_object *jobj, Bdb_Errors &errors) {
+void Title_DTO::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "class_name": ... `
   std::string jobj_class_name =
       Bdb_json_utils::get_json_string("Title_DTO::from_json", "1", jobj, "class_name", errors);
@@ -82,7 +82,7 @@ void Title_DTO::from_json(json_object *jobj, Bdb_Errors &errors) {
 }
 
 int Title_DTO::get_title_primary_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey) {
-  Bdb_Errors errors;
+  Bdb_errors errors;
   Title_DTO title_dto(pdata->get_data());
   // key memory is malloc()'d, berkeley db will free
   std::memset((void *) skey, 0, sizeof(Dbt));
@@ -97,7 +97,7 @@ int Title_DTO::get_title_primary_name(Db *dbp, const Dbt *pkey, const Dbt *pdata
   return (0);
 }
 
-void Title_DTO::parse(int count, const std::string &line, Bdb_Errors &errors, char delimiter) {
+void Title_DTO::parse(int count, const std::string &line, Bdb_errors &errors, char delimiter) {
   // tconst	titleType	primaryTitle	originalTitle	isAdult	startYear	endYear	runtimeMinutes	genres
   std::vector<std::string> token_list = Bdb_Tokens::tokenize(line, '\t');
   int i = 0;
@@ -172,7 +172,7 @@ void *Title_DTO::serialize(void *buffer) const {
   return p;
 }
 
-json_object *Title_DTO::to_json(Bdb_Errors &errors) const {
+json_object *Title_DTO::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {
     errors.add("Title_DTO::to_json", "1", "json-c allocate error");
@@ -239,7 +239,7 @@ std::string Title_DTO_key::to_string() const {
 
 const std::string Title_DTO_list::class_name = "Title_DTO_list";
 
-json_object *Title_DTO_list::to_json(Bdb_Errors &errors) const {
+json_object *Title_DTO_list::to_json(Bdb_errors &errors) const {
   json_object *root = json_object_new_object();
   if (!root) {
     errors.add("Primary_database_config::to_json", "1", "json-c allocate error");

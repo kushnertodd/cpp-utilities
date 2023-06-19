@@ -5,7 +5,7 @@ Bdb_db::~Bdb_db() {
 }
 
 // Class constructor. Requires a location where the database is located, and a database name
-Bdb_db::Bdb_db(const std::string &db_name, Bdb_Errors &errors, bool is_secondary_, bool has_duplicates_)
+Bdb_db::Bdb_db(const std::string &db_name, Bdb_errors &errors, bool is_secondary_, bool has_duplicates_)
     : db_(nullptr, 0),               // Instantiate Db object
       db_file_name(Bdb_env::get_db_home() + "/" + db_name), // Database file name
       is_secondary(is_secondary_),
@@ -39,7 +39,7 @@ void Bdb_db::close() {
   }
 }
 
-std::unique_ptr<Bdb_db_config> Bdb_db::open(Bdb_Errors &errors) {
+std::unique_ptr<Bdb_db_config> Bdb_db::open(Bdb_errors &errors) {
   try {
     // If this is a secondary database, support
     // sorted duplicates

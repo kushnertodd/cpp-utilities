@@ -35,7 +35,7 @@ add_subdirectory(util-lib)
 #find_package(OpenSSL REQUIRED)
 
 # https://github.com/cloudshark/cshark/blob/master/build/modules/FindJSON-C.cmake
-#find_package(JSON-C REQUIRED)
+find_package(JSON-C REQUIRED)
 
 #https://github.com/sum01/FindBerkeleyDB
 find_package(BerkeleyDB REQUIRED)
@@ -47,10 +47,10 @@ add_executable(bdb_db_config_test apps/bdb_db_config_test.cpp)
 target_link_libraries(bdb_db_config_test
         PRIVATE bdb-lib util-lib
         PUBLIC Oracle::BerkeleyDB
-        #PUBLIC ${JSON-C_LIBRARIES}
         #PUBLIC OpenSSL::SSL
         #PUBLIC OpenSSL::Crypto
         #PUBLIC Threads::Threads
+        PUBLIC ${JSON-C_LIBRARIES}
         )
 
 #include(Doxygen)

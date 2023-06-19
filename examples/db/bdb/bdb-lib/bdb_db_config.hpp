@@ -15,13 +15,9 @@
 
 class Bdb_db {
  public:
+
   class Bdb_db_config {
    public:
-   private:
-    friend class Bdb_db;
-
-    Db db_;
-    u_int32_t m_c_flags{};
     int m_cache_gbytes{4};
     int m_cache_bytes{};
     bool m_can_create{false};
@@ -29,30 +25,45 @@ class Bdb_db {
     bool m_can_write{false};
     std::string m_filename{};
     bool m_has_duplicates{false};
-    bool m_is_open{false};
     bool m_is_secondary{false};
     bool m_truncate{false};
 
-    void close();
     ~Bdb_db_config();
-    explicit Bdb_db_config(std::string filename);
-    inline Db &get_db() { return db_; }
+    std::string to_string();
 
-    // https://learn.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170
-friend std::ostream &operator<<(std::ostream &os, const Bdb_db::Bdb_db_config &bdb_db_config);;=
+   private:
+    friend class Bdb_db;
+
+    Db db_;
+    u_int32_t m_c_flags{};
+
+    explicit Bdb_db_config(std::string filename) // ..., *Bdb_env)
+        : db_(nullptr, 0),
+          m_filename(std::move(filename)) {}
+    void close();
+    inline Db &get_db() { return db_; }
   };
 
-  std::unique_ptr<Bdb_db_config> open(Bdb_Errors &errors);
-  Bdb_db& cache_gbytes(int m_cache_gbytes);
-  Bdb_db& cache_bytes(int cache_bytes);
-  Bdb_db& can_create();
-  Bdb_db& can_exist();
-  Bdb_db& can_write();
-  Bdb_db& has_duplicates();
-  Bdb_db& is_secondary();
-  Bdb_db& truncate();
+  explicit Bdb_db(std::string filename);
+  void bdb_open(Bdb_errors &errors);
+  std::string to_string();
+  std::unique_ptr<Bdb_db_config> build(Bdb_errors &errors);
+  Bdb_db &cache_gbytes(int m_cache_gbytes);
+  Bdb_db &cache_bytes(int cache_bytes);
+  Bdb_db &can_create();
+  Bdb_db &can_exist();
+  Bdb_db &can_write();
+  Bdb_db &has_duplicates();
+  Bdb_db &is_secondary();
+  Bdb_db &truncate();
+
  private:
   std::unique_ptr<Bdb_db_config> m_bdb_db_config{};
+
+  // https://learn.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170
+  std::ostream &operator<<(std::ostream &os) {
+    return os << m_bdb_db_config->to_string();
+  }
 };
 
-std::ostream &operator<<(std::ostream &os, const Bdb_db::Bdb_db_config &bdb_db_config);
+//std::ostream &operator<<(std::ostream &os, const Bdb_db &bdb_db);

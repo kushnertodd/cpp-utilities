@@ -11,7 +11,7 @@ class Bdb_db {
 
   // Constructor requires a database name.
   // builds and opens the BDB object
-  Bdb_db(const std::string &db_name, Bdb_Errors &errors);
+  Bdb_db(const std::string &db_name, Bdb_errors &errors);
 
   // Our destructor just calls our private close method.
   ~Bdb_db();
@@ -20,7 +20,7 @@ class Bdb_db {
   inline std::string get_db_filename() { return db_file_name; }
 
   // called by the second constructor, must be called separately on using the first constructor
-  std::unique_ptr<Bdb_db_config> open(Bdb_Errors &errors);
+  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
   std::string to_string();
 
  private:

@@ -20,7 +20,7 @@ std::string Misc_utils::char_to_string(char c) {
   return s;
 }
 
-int Misc_utils::string_to_int(const std::string &int_str, Bdb_Errors &errors) {
+int Misc_utils::string_to_int(const std::string &int_str, Bdb_errors &errors) {
   try {
     int i = std::stoi(int_str);
     return i;
@@ -33,7 +33,7 @@ int Misc_utils::string_to_int(const std::string &int_str, Bdb_Errors &errors) {
   return 0;
 }
 
-double Misc_utils::string_to_real(const std::string &real_str, Bdb_Errors &errors) {
+double Misc_utils::string_to_real(const std::string &real_str, Bdb_errors &errors) {
   try {
     double d = std::stod(real_str);
     return d;

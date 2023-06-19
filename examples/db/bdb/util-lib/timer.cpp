@@ -28,7 +28,7 @@ void Timer::start() {
   t_end = std::chrono::high_resolution_clock::now();
 }
 
-json_object *Timer::to_json(Bdb_Errors &errors, int count) {
+json_object *Timer::to_json(Bdb_errors &errors, int count) {
   json_object *root = json_object_new_object();
   if (!root) {
     errors.add("Timer::to_json", "1", "json-c allocate error");

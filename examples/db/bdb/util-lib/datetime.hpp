@@ -72,7 +72,7 @@ class Datetime : Serialization {
   Datetime();
   explicit Datetime(std::tm *tm);
   explicit Datetime(time_t epoch_time_);
-  Datetime(const std::string &date_time_str, Bdb_Errors &errors, const std::string &format = "%m/%d/%Y");
+  Datetime(const std::string &date_time_str, Bdb_errors &errors, const std::string &format = "%m/%d/%Y");
 
   size_t buffer_size();
   inline int day() { return to_tm()->tm_mday; }
@@ -80,7 +80,7 @@ class Datetime : Serialization {
   [[nodiscard]] double days_before(time_t start_time) const;
   [[nodiscard]] double days_since(time_t start_time) const;
   void *deserialize(void *buffer);
-  void from_string(const std::string &date_time_str, Bdb_Errors &errors, const std::string &format = "%m/%d/%Y");
+  void from_string(const std::string &date_time_str, Bdb_errors &errors, const std::string &format = "%m/%d/%Y");
   void from_time(time_t epoch_time);
   void from_tm(std::tm *tm);
   inline int hour() { return to_tm()->tm_hour; }
@@ -96,7 +96,7 @@ class Datetime : Serialization {
   inline void set_time(time_t epoch_time_) { epoch_time = epoch_time_; }
   inline void set_now() { epoch_time = now(); }
   std::string to_string();
-  std::string to_string(const std::string &format, Bdb_Errors &errors);
+  std::string to_string(const std::string &format, Bdb_errors &errors);
   std::tm *to_tm();
   [[nodiscard]] inline time_t time() const { return epoch_time; }
   inline int week_day() { return to_tm()->tm_wday; }

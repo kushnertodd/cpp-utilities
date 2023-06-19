@@ -13,12 +13,12 @@
 
 class Title_DAO {
  public:
-  static int load(Bdb_db &title_db, const std::string &text_file, Bdb_Errors &errors, char delimiter = tab);
-  static void lookup(Bdb_db &title_db, const std::string &title_id, Title_DTO &title_dto, Bdb_Errors &errors);
-  static void save(Bdb_db &title_db, Title_DTO &title_dto, Bdb_Errors &errors);
+  static int load(Bdb_db &title_db, const std::string &text_file, Bdb_errors &errors, char delimiter = tab);
+  static void lookup(Bdb_db &title_db, const std::string &title_id, Title_DTO &title_dto, Bdb_errors &errors);
+  static void save(Bdb_db &title_db, Title_DTO &title_dto, Bdb_errors &errors);
 };
 
 class Title_DAO_list {
  public:
-  static void select(Bdb_db &title_db, Title_DTO_list &title_dto_list, Bdb_Errors &errors);
+  static void select(Bdb_db &title_db, Title_DTO_list &title_dto_list, Bdb_errors &errors);
 };

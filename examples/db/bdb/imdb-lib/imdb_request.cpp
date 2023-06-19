@@ -20,7 +20,7 @@
 
 const std::string Imdb_request::class_name = "Imdb_request";
 
-Imdb_request::Imdb_request(json_object *jobj, Bdb_Errors &errors) {
+Imdb_request::Imdb_request(json_object *jobj, Bdb_errors &errors) {
   from_json(jobj, errors);
 }
 
@@ -33,7 +33,7 @@ Imdb_request::Imdb_request(json_object *jobj, Bdb_Errors &errors) {
     ]
   }
  */
-void Imdb_request::from_json(json_object *jobj, Bdb_Errors &errors) {
+void Imdb_request::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "class_name": ... `
   std::string jobj_class_name =
       Bdb_json_utils::get_json_string("Imdb_request::from_json", "1", jobj, "class_name", errors);
@@ -59,7 +59,7 @@ void Imdb_request::from_json(json_object *jobj, Bdb_Errors &errors) {
 }
 
 json_object *Imdb_request::process_load_name_request(Bdb_databases_config &bdb_databases_config,
-                                                     Bdb_Errors &errors) {
+                                                     Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_load_name_request", "1", "missing imdb load name request arguments");
   Primary_database_config primary_database_config;
@@ -80,7 +80,7 @@ json_object *Imdb_request::process_load_name_request(Bdb_databases_config &bdb_d
 }
 
 json_object *Imdb_request::process_load_principals_request(Bdb_databases_config &bdb_databases_config,
-                                                           Bdb_Errors &errors) {
+                                                           Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_load_principals_request", "1", "missing imdb load principals request arguments");
   Primary_database_config primary_database_config;
@@ -101,7 +101,7 @@ json_object *Imdb_request::process_load_principals_request(Bdb_databases_config 
 }
 
 json_object *Imdb_request::process_load_ratings_request(Bdb_databases_config &bdb_databases_config,
-                                                        Bdb_Errors &errors) {
+                                                        Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_load_ratings_request", "1", "missing ratings_id");
   Primary_database_config primary_database_config;
@@ -122,7 +122,7 @@ json_object *Imdb_request::process_load_ratings_request(Bdb_databases_config &bd
 }
 
 json_object *Imdb_request::process_load_title_request(Bdb_databases_config &bdb_databases_config,
-                                                      Bdb_Errors &errors) {
+                                                      Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_load_title_request", "1", "missing title_id");
   Primary_database_config primary_database_config;
@@ -143,7 +143,7 @@ json_object *Imdb_request::process_load_title_request(Bdb_databases_config &bdb_
 }
 
 json_object *Imdb_request::process_load_title_tripthongs_request(Bdb_databases_config &bdb_databases_config,
-                                                                 Bdb_Errors &errors) {
+                                                                 Bdb_errors &errors) {
   Primary_database_config title_primary_database_config;
   bdb_databases_config.select("title", title_primary_database_config, errors);
   if (!errors.has()) {
@@ -169,7 +169,7 @@ json_object *Imdb_request::process_load_title_tripthongs_request(Bdb_databases_c
 
 json_object *Imdb_request::process_lookup_name_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_lookup_name_request", "1", "missing name_id");
   Primary_database_config primary_database_config;
@@ -194,7 +194,7 @@ json_object *Imdb_request::process_lookup_name_request(
 
 json_object *Imdb_request::process_lookup_ratings_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::run", "2", "missing ratings_id");
   Primary_database_config primary_database_config;
@@ -219,7 +219,7 @@ json_object *Imdb_request::process_lookup_ratings_request(
 
 json_object *Imdb_request::process_lookup_title_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::run", "2", "missing title_id");
   Primary_database_config primary_database_config;
@@ -244,7 +244,7 @@ json_object *Imdb_request::process_lookup_title_request(
 
 json_object *Imdb_request::process_request(const std::string &imdb_request_json_filename,
                                            Bdb_databases_config &bdb_databases_config,
-                                           Bdb_Errors &errors) {
+                                           Bdb_errors &errors) {
   Imdb_request_response imdb_request_response(errors);
   json_object *request_json;
   if (!errors.has()) {
@@ -285,7 +285,7 @@ json_object *Imdb_request::process_request(const std::string &imdb_request_json_
 
 json_object *Imdb_request::process_search_name_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_search_name_request", "1", "missing name_id");
   Primary_database_config principals_primary_database_config;
@@ -324,7 +324,7 @@ json_object *Imdb_request::process_search_name_request(
 
 json_object *Imdb_request::process_search_title_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_search_title_request", "1", "missing name_id");
   Primary_database_config principals_primary_database_config;
@@ -364,7 +364,7 @@ json_object *Imdb_request::process_search_title_request(
 
 json_object *Imdb_request::process_search_title_tripthongs_request(
     Bdb_databases_config &bdb_databases_config,
-    Bdb_Errors &errors) {
+    Bdb_errors &errors) {
   if (arguments.empty())
     errors.add("Imdb_request::process_search_title_tripthongs_request", "1", "missing name_id");
   Primary_database_config title_primary_database_config;
@@ -390,7 +390,7 @@ json_object *Imdb_request::process_search_title_tripthongs_request(
 }
 
 json_object *Imdb_request::process_select_name_request(Bdb_databases_config &bdb_databases_config,
-                                                       Bdb_Errors &errors) {
+                                                       Bdb_errors &errors) {
   Primary_database_config primary_database_config;
   bdb_databases_config.select("name", primary_database_config, errors);
   if (!errors.has()) {
@@ -411,7 +411,7 @@ json_object *Imdb_request::process_select_name_request(Bdb_databases_config &bdb
 }
 
 json_object *Imdb_request::process_select_principals_request(Bdb_databases_config &bdb_databases_config,
-                                                             Bdb_Errors &errors) {
+                                                             Bdb_errors &errors) {
   Primary_database_config primary_database_config;
   bdb_databases_config.select("principals", primary_database_config, errors);
   if (!errors.has()) {
@@ -432,7 +432,7 @@ json_object *Imdb_request::process_select_principals_request(Bdb_databases_confi
 }
 
 json_object *Imdb_request::process_select_ratings_request(Bdb_databases_config &bdb_databases_config,
-                                                          Bdb_Errors &errors) {
+                                                          Bdb_errors &errors) {
   Primary_database_config primary_database_config;
   bdb_databases_config.select("ratings", primary_database_config, errors);
   if (!errors.has()) {
@@ -453,7 +453,7 @@ json_object *Imdb_request::process_select_ratings_request(Bdb_databases_config &
 }
 
 json_object *Imdb_request::process_select_title_request(Bdb_databases_config &bdb_databases_config,
-                                                        Bdb_Errors &errors) {
+                                                        Bdb_errors &errors) {
   Primary_database_config primary_database_config;
   bdb_databases_config.select("title", primary_database_config, errors);
   if (!errors.has()) {
@@ -473,7 +473,7 @@ json_object *Imdb_request::process_select_title_request(Bdb_databases_config &bd
   return nullptr;
 }
 
-json_object *Imdb_request::run(Bdb_databases_config &bdb_databases_config, Bdb_Errors &errors) {
+json_object *Imdb_request::run(Bdb_databases_config &bdb_databases_config, Bdb_errors &errors) {
   json_object *request_response = nullptr;
   if (request == "load_name") {
     request_response = process_load_name_request(bdb_databases_config, errors);
@@ -513,7 +513,7 @@ json_object *Imdb_request::run(Bdb_databases_config &bdb_databases_config, Bdb_E
     return errors.to_json();
 }
 
-json_object *Imdb_request::to_json(Bdb_Errors &errors) {
+json_object *Imdb_request::to_json(Bdb_errors &errors) {
   json_object *root = json_object_new_object();
   if (!root) {
     errors.add("Imdb_request::to_json", "1", "json-c allocate error");
@@ -545,11 +545,11 @@ std::string Imdb_request::to_string() const {
 
 const std::string Imdb_requests::class_name = "Imdb_requests";
 
-Imdb_requests::Imdb_requests(json_object *jobj, Bdb_Errors &errors) {
+Imdb_requests::Imdb_requests(json_object *jobj, Bdb_errors &errors) {
   from_json(jobj, errors);
 }
 
-void Imdb_requests::from_json(json_object *jobj, Bdb_Errors &errors) {
+void Imdb_requests::from_json(json_object *jobj, Bdb_errors &errors) {
   // parse: ' { "class_name": ... `
   std::string jobj_class_name =
       Bdb_json_utils::get_json_string("Imdb_requests::from_json", "1", jobj, "class_name", errors);
@@ -570,7 +570,7 @@ void Imdb_requests::from_json(json_object *jobj, Bdb_Errors &errors) {
   }
 }
 
-json_object *Imdb_requests::to_json(Bdb_Errors &errors) {
+json_object *Imdb_requests::to_json(Bdb_errors &errors) {
   json_object *root = json_object_new_object();
   if (!root) {
     errors.add("Imdb_requests::to_json", "1", "json-c allocate error");
@@ -600,7 +600,7 @@ json_object *Imdb_requests::to_json(Bdb_Errors &errors) {
 
 const std::string Imdb_request_response::class_name = "Imdb_request_response";
 
-Imdb_request_response::Imdb_request_response(Bdb_Errors &errors) {
+Imdb_request_response::Imdb_request_response(Bdb_errors &errors) {
   request_response_json = json_object_new_object();
   if (!request_response_json) {
     errors.add("Imdb_request_response::to_json", "1", "json-c allocate error");
@@ -630,7 +630,7 @@ void Imdb_request_response::cleanup() const {
   json_object_put(request_response_json);
 }
 
-json_object *Imdb_request_response::to_load_response(int count, Timer &timer, Bdb_Errors &errors) {
+json_object *Imdb_request_response::to_load_response(int count, Timer &timer, Bdb_errors &errors) {
   json_object *load_response_json = json_object_new_object();
   if (!load_response_json) {
     errors.add("Imdb_request::to_json", "1", "json-c allocate error");

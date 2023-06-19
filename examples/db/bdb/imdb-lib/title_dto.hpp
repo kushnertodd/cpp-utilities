@@ -44,16 +44,16 @@ class Title_DTO { // use Imdb_DTO as pattern but do not inherit
   Title_DTO &operator=(const Title_DTO &title_) = default;
   Title_DTO &operator=(Title_DTO &&title_) = default;
   explicit Title_DTO(void *buffer);
-  Title_DTO(int count, const std::string &line, Bdb_Errors &errors, char delimiter);
+  Title_DTO(int count, const std::string &line, Bdb_errors &errors, char delimiter);
 
   [[nodiscard]] size_t buffer_size() const;
   void *deserialize(void *buffer);
   [[nodiscard]] bool equals(const Title_DTO &title) const;
-  void from_json(json_object *jobj, Bdb_Errors &errors);
+  void from_json(json_object *jobj, Bdb_errors &errors);
   static int get_title_primary_name(Db *dbp, const Dbt *pkey, const Dbt *pdata, Dbt *skey);
-  void parse(int count, const std::string &line, Bdb_Errors &errors, char delimiter);
+  void parse(int count, const std::string &line, Bdb_errors &errors, char delimiter);
   void *serialize(void *buffer) const;
-  json_object *to_json(Bdb_Errors &errors) const;
+  json_object *to_json(Bdb_errors &errors) const;
   [[nodiscard]] std::string to_string() const;
 };
 
@@ -80,5 +80,5 @@ class Title_DTO_list {
  public:
   static const std::string class_name;
   std::list<Title_DTO> list;
-  json_object *to_json(Bdb_Errors &errors) const;
+  json_object *to_json(Bdb_errors &errors) const;
 };
