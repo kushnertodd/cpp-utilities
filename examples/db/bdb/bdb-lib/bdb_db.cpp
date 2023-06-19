@@ -1,82 +1,119 @@
+//
+// Created by kushn on 6/18/2023.
+//
+
+#include <sstream>
+#include <utility>
 #include "bdb_db.hpp"
 
-Bdb_db::~Bdb_db() {
+// Bdb_db_config methods
+
+Bdb_db::Bdb_db_config::~Bdb_db_config() {
   close();
 }
 
-// Class constructor. Requires a location where the database is located, and a database name
-Bdb_db::Bdb_db(const std::string &db_name, Bdb_errors &errors, bool is_secondary_, bool has_duplicates_)
-    : db_(nullptr, 0),               // Instantiate Db object
-      db_file_name(Bdb_env::get_db_home() + "/" + db_name), // Database file name
-      is_secondary(is_secondary_),
-      has_duplicates(has_duplicates_),
-      c_flags(DB_CREATE)          // If the database doesn't yet exist,
-{
-  if (Bdb_global::debug)
-    std::cout << "Bdb_db::Bdb_db: opening " << db_file_name << std::endl;
-  open(errors);
-}
-
-/*
- * Private member used to close a database. Called from the class destructor.
- * - Assume close() occurs at the program end, no worries not to trap the error
- * - When called on a database that is the primary database for a secondary index,
- *   the primary database should be closed only after all secondary indices referencing
- *   it has been closed.
- * If DB->open() fails, the DB->close() method must be called to discard the DB handle.
- */
-void Bdb_db::close() {
-  // Close the db
+void Bdb_db::Bdb_db_config::close() noexcept {
   try {
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbclose.html
     db_.close(0);
   }
   catch (DbException &e) {
-    std::cerr << "Error closing database: " << db_file_name << " (" << e.what() << ")" << std::endl;
+    std::cerr << Bdb_error("Bdb_db::Bdb_db_config::close", "1",
+                           "Error closing database: " + m_filename + " (" + e.what() + ")", e.get_errno()).to_string();
   }
   catch (std::exception &e) {
-    std::cerr << "Error closing database: " << db_file_name << " (" << e.what() << ")" << std::endl;
+    std::cerr << Bdb_error("Bdb_db::Bdb_db_config::close", "1",
+                           "Error closing database: " + m_filename + " (" + e.what() + ")").to_string();
   }
 }
 
-std::unique_ptr<Bdb_db_config> Bdb_db::open(Bdb_errors &errors) {
+std::string Bdb_db::Bdb_db_config::to_string() {
+  std::ostringstream os;
+  os << "cache_gbytes   " << m_cache_gbytes << std::endl
+     << "cache_bytes    " << m_cache_bytes << std::endl
+     << "can_create     " << m_can_create << std::endl
+     << "must_exist     " << m_must_exist << std::endl
+     << "read_only      " << m_read_only << std::endl
+     << "filename       " << m_filename << std::endl
+     << "has_duplicates " << m_has_duplicates << std::endl
+     << "is_secondary   " << m_is_secondary << std::endl
+     << "truncate       " << m_truncate << std::endl;
+  return os.str();
+}
+
+// Bdb_db methods
+
+Bdb_db::Bdb_db(std::string filename, DbEnv* db_env, int flags)
+    : m_bdb_db_config{new Bdb_db_config{std::move(filename), db_env, flags}} {}
+
+Bdb_db &Bdb_db::cache_gbytes(int cache_gbytes) {
+  m_bdb_db_config->m_cache_gbytes = cache_gbytes;
+  return *this;
+}
+Bdb_db &Bdb_db::cache_bytes(int cache_bytes) {
+  m_bdb_db_config->m_cache_bytes = cache_bytes;
+  return *this;
+}
+Bdb_db &Bdb_db::can_create() {
+  m_bdb_db_config->m_c_flags |= DB_CREATE;
+  return *this;
+}
+Bdb_db &Bdb_db::c_flags(int flags) {
+  m_bdb_db_config->m_c_flags = flags;
+  return *this;
+}
+Bdb_db &Bdb_db::must_exist() {
+  m_bdb_db_config->m_c_flags |= DB_EXCL;
+  return *this;
+}
+Bdb_db &Bdb_db::read_only() {
+  m_bdb_db_config->m_c_flags |= DB_RDONLY;
+  return *this;
+}
+Bdb_db &Bdb_db::has_duplicates() {
+  m_bdb_db_config->db_.set_flags(DB_DUP);
+  return *this;
+}
+// If this is a secondary database, support sorted duplicates
+Bdb_db &Bdb_db::is_secondary() {
+  m_bdb_db_config->db_.set_flags(DB_DUPSORT);
+  return *this;
+}
+Bdb_db &Bdb_db::truncate() {
+  m_bdb_db_config->m_c_flags |= DB_TRUNCATE;
+  return *this;
+}
+
+void Bdb_db::bdb_open(Bdb_errors &errors) {
   try {
-    // If this is a secondary database, support
-    // sorted duplicates
-
-    int cache_gbytes = Bdb_env::get_cache_gbytes();
-    int cache_bytes = Bdb_env::get_cache_bytes();
-    int ret = db_.set_cachesize(cache_gbytes, cache_bytes, 1);
-    if (ret)
-      errors.add("BDB_db::open", "1", " set_cachesize error ", ret);
-    db_.set_error_stream(&std::cerr);
-    int ret1;
-    if (is_secondary)
-      ret1 = db_.set_flags(DB_DUPSORT);
-    else if (has_duplicates)
-      ret1 = db_.set_flags(DB_DUP);
-
     // Open the database
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbopen.html
-    if (!errors.has()) {
-      if (Bdb_global::debug)
-        std::cout << "Bdb_db::open(" << Bdb_file_IO::to_string(db_file_name) << ")" << std::endl;
-      ret = db_.open(nullptr, db_file_name.c_str(), nullptr, DB_BTREE, c_flags, 0);
-      if (ret)
-        errors.add("BDB_db::open", "2", db_file_name + " open error ", ret);
-    }
+    int ret = m_bdb_db_config->db_.open(nullptr,
+                                        m_bdb_db_config->m_filename.c_str(),
+                                        nullptr,
+                                        DB_BTREE,
+                                        m_bdb_db_config->m_c_flags,
+                                        0);
+    if (ret)
+      errors.add("BDB_db::open", "2", "Error opening database: " + m_bdb_db_config->m_filename, ret);
   }
-    // DbException is not a subclass of std::exception, so we
-    // need to catch them both.
+    // DbException is not a subclass of std::exception, so we need to catch them both.
   catch (DbException &e) {
-    errors.add("BDB_db::open", "3", db_file_name + " (" + e.what() + ")", e.get_errno());
+    errors.add("BDB_db::open",
+               "3",
+               "Error opening database: " + m_bdb_db_config->m_filename + " (" + e.what() + ")",
+               e.get_errno());
   }
   catch (std::exception &e) {
-    errors.add("BDB_db::open", "4", db_file_name + " (" + e.what() + ")");
+    errors.add("BDB_db::open", "4", "Error opening database: " + m_bdb_db_config->m_filename + " (" + e.what() + ")");
   }
 }
 
 std::string Bdb_db::to_string() {
-  return get_db_filename();
+  return m_bdb_db_config->to_string();
 }
 
+std::unique_ptr<Bdb_db::Bdb_db_config> Bdb_db::open(Bdb_errors &errors) {
+  bdb_open(errors);
+  return std::move(m_bdb_db_config);
+}

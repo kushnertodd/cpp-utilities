@@ -1,36 +1,68 @@
+//
+// Created by kushn on 6/18/2023.
+//
+
 #pragma once
 
 #include <db_cxx.h>
+#include <iostream>
+#include <utility>
+#include <memory>
 #include "bdb_errors.hpp"
+
+// https://platis.solutions/blog/2023/01/03/builder-pattern-cpp/
 
 class Bdb_db {
  public:
-  // builds the BDB_db object
-  // default constructor is not used.
-  Bdb_db() = delete;
 
-  // Constructor requires a database name.
-  // builds and opens the BDB object
-  Bdb_db(const std::string &db_name, Bdb_errors &errors);
+  class Bdb_db_config {
+   public:
+    ~Bdb_db_config();
+    std::string to_string();
 
-  // Our destructor just calls our private close method.
-  ~Bdb_db();
+   private:
+    int m_cache_gbytes{4};
+    int m_cache_bytes{};
+    bool m_can_create{false};
+    bool m_must_exist{false};
+    bool m_read_only{false};
+    std::string m_filename{};
+    bool m_has_duplicates{false};
+    bool m_is_secondary{false};
+    bool m_truncate{false};
+    Db db_;
+    u_int32_t m_c_flags{};
 
-  inline Db &get_db() { return db_; }
-  inline std::string get_db_filename() { return db_file_name; }
+    friend class Bdb_db;
 
-  // called by the second constructor, must be called separately on using the first constructor
-  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
+    explicit Bdb_db_config(std::string filename, DbEnv* db_env, int flags)
+        : db_(db_env, flags),
+          m_filename(std::move(filename)) {}
+    void close() noexcept;
+    inline Db &get_db() { return db_; }
+  };
+
+  explicit Bdb_db(std::string filename, DbEnv* db_env = nullptr, int flags = 0);
+  void bdb_open(Bdb_errors &errors);
   std::string to_string();
+  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
+  Bdb_db &cache_gbytes(int m_cache_gbytes);
+  Bdb_db &cache_bytes(int cache_bytes);
+  Bdb_db &can_create();
+  Bdb_db &c_flags(int flags);
+  Bdb_db &must_exist();
+  Bdb_db &read_only();
+  Bdb_db &has_duplicates();
+  Bdb_db &is_secondary();
+  Bdb_db &truncate();
 
  private:
-  u_int32_t c_flags{};
-  Db db_;
-  std::string db_file_name{};
-  bool is_secondary{};
-  bool has_duplicates{};
+  std::unique_ptr<Bdb_db_config> m_bdb_db_config{};
 
-  // This is called from our destructor, private method is more appropriate
-  void close();
-
+  // https://learn.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170
+  std::ostream &operator<<(std::ostream &os) {
+    return os << m_bdb_db_config->to_string();
+  }
 };
+
+//std::ostream &operator<<(std::ostream &os, const Bdb_db &bdb_db);

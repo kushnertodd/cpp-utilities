@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "bdb_errors.hpp"
-#include "bdb_db_config.hpp"
+#include "bdb_db.hpp"
 
 int main() {
   Bdb_errors errors;
