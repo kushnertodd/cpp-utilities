@@ -43,7 +43,7 @@ std::string Bdb_db::Bdb_db_config::to_string() {
 
 // Bdb_db methods
 
-Bdb_db::Bdb_db(std::string filename, DbEnv* db_env, int flags)
+Bdb_db::Bdb_db(std::string filename, DbEnv *db_env, int flags)
     : m_bdb_db_config{new Bdb_db_config{std::move(filename), db_env, flags}} {}
 
 Bdb_db &Bdb_db::cache_gbytes(int cache_gbytes) {

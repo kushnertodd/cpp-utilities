@@ -35,14 +35,14 @@ class Bdb_db {
 
     friend class Bdb_db;
 
-    explicit Bdb_db_config(std::string filename, DbEnv* db_env, int flags)
+    explicit Bdb_db_config(std::string filename, DbEnv *db_env, int flags)
         : db_(db_env, flags),
           m_filename(std::move(filename)) {}
     void close() noexcept;
     inline Db &get_db() { return db_; }
   };
 
-  explicit Bdb_db(std::string filename, DbEnv* db_env = nullptr, int flags = 0);
+  explicit Bdb_db(std::string filename, DbEnv *db_env = nullptr, int flags = 0);
   void bdb_open(Bdb_errors &errors);
   std::string to_string();
   std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
