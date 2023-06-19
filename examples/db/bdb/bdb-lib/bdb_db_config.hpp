@@ -49,6 +49,7 @@ class Bdb_db {
   Bdb_db &cache_gbytes(int m_cache_gbytes);
   Bdb_db &cache_bytes(int cache_bytes);
   Bdb_db &can_create();
+  Bdb_db &c_flags(int flags);
   Bdb_db &must_exist();
   Bdb_db &read_only();
   Bdb_db &has_duplicates();

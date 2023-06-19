@@ -55,50 +55,37 @@ Bdb_db &Bdb_db::cache_bytes(int cache_bytes) {
   return *this;
 }
 Bdb_db &Bdb_db::can_create() {
-  m_bdb_db_config->m_can_create = true;
+  m_bdb_db_config->m_c_flags |= DB_CREATE;
+  return *this;
+}
+Bdb_db &Bdb_db::c_flags(int flags) {
+  m_bdb_db_config->m_c_flags = flags;
   return *this;
 }
 Bdb_db &Bdb_db::must_exist() {
-  m_bdb_db_config->m_must_exist = true;
+  m_bdb_db_config->m_c_flags |= DB_EXCL;
   return *this;
 }
 Bdb_db &Bdb_db::read_only() {
-  m_bdb_db_config->m_read_only = true;
+  m_bdb_db_config->m_c_flags |= DB_RDONLY;
   return *this;
 }
 Bdb_db &Bdb_db::has_duplicates() {
-  m_bdb_db_config->m_has_duplicates = true;
+  m_bdb_db_config->db_.set_flags(DB_DUP);
   return *this;
 }
+// If this is a secondary database, support sorted duplicates
 Bdb_db &Bdb_db::is_secondary() {
-  m_bdb_db_config->m_is_secondary = true;
+  m_bdb_db_config->db_.set_flags(DB_DUPSORT);
   return *this;
 }
 Bdb_db &Bdb_db::truncate() {
-  m_bdb_db_config->m_truncate = true;
+  m_bdb_db_config->m_c_flags |= DB_TRUNCATE;
   return *this;
 }
 
 void Bdb_db::bdb_open(Bdb_errors &errors) {
   try {
-    // If this is a secondary database, support sorted duplicates
-
-    m_bdb_db_config->m_c_flags = 0;
-    if (m_bdb_db_config->m_can_create)
-      m_bdb_db_config->m_c_flags |= DB_CREATE;
-    if (m_bdb_db_config->m_can_create)
-      m_bdb_db_config->m_c_flags |= DB_EXCL;
-    if (m_bdb_db_config->m_read_only)
-      m_bdb_db_config->m_c_flags |= DB_RDONLY;
-    if (m_bdb_db_config->m_truncate)
-      m_bdb_db_config->m_c_flags |= DB_TRUNCATE;
-    if (m_bdb_db_config->m_is_secondary)
-      m_bdb_db_config->db_.set_flags(DB_DUPSORT);
-    else if (m_bdb_db_config->m_has_duplicates)
-      m_bdb_db_config->db_.set_flags(DB_DUP);
-    m_bdb_db_config->db_.set_cachesize(m_bdb_db_config->m_cache_gbytes, m_bdb_db_config->m_cache_bytes, 1);
-    m_bdb_db_config->db_.set_error_stream(&std::cerr);
-
     // Open the database
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbopen.html
     int ret = m_bdb_db_config->db_.open(nullptr,
