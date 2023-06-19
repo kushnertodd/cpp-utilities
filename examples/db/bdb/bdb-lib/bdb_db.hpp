@@ -20,7 +20,7 @@ class Bdb_db {
   inline std::string get_db_filename() { return db_file_name; }
 
   // called by the second constructor, must be called separately on using the first constructor
-  void open(Bdb_Errors &errors);
+  std::unique_ptr<Bdb_db_config> open(Bdb_Errors &errors);
   std::string to_string();
 
  private:

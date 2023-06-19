@@ -3,25 +3,21 @@
 //
 
 #include "bdb_db_config.hpp"
+#include "bdb_db_config_builder.hpp"
 
 #include <utility>
 
 // Bdb_db_config methods
 
-Bdb_db_config::~Bdb_db_config() {
+Bdb_db::Bdb_db_config::~Bdb_db_config() {
   close();
 }
 
-Bdb_db_config::Bdb_db_config(std::string filename)
-    :
+Bdb_db::Bdb_db_config::Bdb_db_config(std::string filename) :
     db_(nullptr, 0),
     m_filename(std::move(filename)) {}
 
-Bdb_db_config Bdb_db_config::create(std::string filename) {
-  return Bdb_db_config{std::move(filename)};
-}
-
-std::ostream &operator<<(std::ostream &os, const Bdb_db_config &bdb_db_config) {
+std::ostream &operator<<(std::ostream &os, const Bdb_db::Bdb_db_config &bdb_db_config) {
   return os
       << "cache_gbytes   " << bdb_db_config.m_cache_gbytes << std::endl
       << "cache_bytes    " << bdb_db_config.m_cache_bytes << std::endl
@@ -37,56 +33,58 @@ std::ostream &operator<<(std::ostream &os, const Bdb_db_config &bdb_db_config) {
 
 // configuration methods
 
-Bdb_db_config &Bdb_db_config::cache_gbytes(int cache_gbytes) {
-  m_cache_gbytes = cache_gbytes;
+Bdb_db &Bdb_db::cache_gbytes(int cache_gbytes) {
+  m_bdb_db_config->m_cache_gbytes = cache_gbytes;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::cache_bytes(int cache_bytes) {
-  m_cache_bytes = cache_bytes;
+Bdb_db &Bdb_db::cache_bytes(int cache_bytes) {
+  m_bdb_db_config->m_cache_bytes = cache_bytes;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::can_create() {
-  m_can_create = true;
+Bdb_db &Bdb_db::can_create() {
+  m_bdb_db_config->m_can_create = true;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::can_exist() {
-  m_can_exist = true;
+Bdb_db &Bdb_db::can_exist() {
+  m_bdb_db_config->m_can_exist = true;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::can_write() {
-  m_can_write = true;
+Bdb_db &Bdb_db::can_write() {
+  m_bdb_db_config->m_can_write = true;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::has_duplicates() {
-  m_has_duplicates = true;
+Bdb_db &Bdb_db::has_duplicates() {
+  m_bdb_db_config->m_has_duplicates = true;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::is_secondary() {
-  m_is_secondary = true;
+Bdb_db &Bdb_db::is_secondary() {
+  m_bdb_db_config->m_is_secondary = true;
   return *this;
 }
-Bdb_db_config &Bdb_db_config::truncate() {
-  m_truncate = true;
+Bdb_db &Bdb_db::truncate() {
+  m_bdb_db_config->m_truncate = true;
   return *this;
 }
 
 // runtime methods
 
-void Bdb_db_config::close() {
+void Bdb_db::Bdb_db_config::close() {
   try {
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbclose.html
     if (m_is_open)
       db_.close(0);
   }
   catch (DbException &e) {
-    std::cerr << "Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
+    std::cerr << "Bdb_db::Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")"
+              << std::endl;
   }
   catch (std::exception &e) {
-    std::cerr << "Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")" << std::endl;
+    std::cerr << "Bdb_db::Bdb_db_config::close: Error closing database: " << m_filename << " (" << e.what() << ")"
+              << std::endl;
   }
 }
 
-void Bdb_db_config::open(Bdb_Errors &errors) {
+std::unique_ptr<Bdb_db_config> Bdb_db::open(Bdb_Errors &errors) {
   try {
     // If this is a secondary database, support
     // sorted duplicates
@@ -119,4 +117,5 @@ void Bdb_db_config::open(Bdb_Errors &errors) {
   catch (std::exception &e) {
     errors.add("BDB_db::open", "4", "Error opening database: " + m_filename + " (" + e.what() + ")");
   }
+  return std::move(m_bdb_db_config);
 }

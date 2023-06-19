@@ -39,7 +39,7 @@ void Bdb_db::close() {
   }
 }
 
-void Bdb_db::open(Bdb_Errors &errors) {
+std::unique_ptr<Bdb_db_config> Bdb_db::open(Bdb_Errors &errors) {
   try {
     // If this is a secondary database, support
     // sorted duplicates
