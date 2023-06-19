@@ -13,25 +13,24 @@ Bdb_db::Bdb_db_config::~Bdb_db_config() {
   close();
 }
 
-void Bdb_db::Bdb_db_config::close() {
+void Bdb_db::Bdb_db_config::close() noexcept {
   try {
     // https://docs.oracle.com/cd/E17076_05/html/api_reference/C/dbclose.html
     db_.close(0);
   }
   catch (DbException &e) {
-    throw Bdb_error_exception("Bdb_db::Bdb_db_config::close", "1",
-                              "Error closing database: " + m_filename + " (" + e.what() + ")");
+    std::cerr <<Bdb_error("Bdb_db::Bdb_db_config::close", "1",
+                              "Error closing database: " + m_filename + " (" + e.what() + ")").to_string();
   }
   catch (std::exception &e) {
-    throw Bdb_error_exception("Bdb_db::Bdb_db_config::close", "1",
-                              "Error closing database: " + m_filename + " (" + e.what() + ")");
+    std::cerr <<Bdb_error("Bdb_db::Bdb_db_config::close", "1",
+                              "Error closing database: " + m_filename + " (" + e.what() + ")").to_string();
   }
 }
 
 std::string Bdb_db::Bdb_db_config::to_string() {
   std::ostringstream os;
-  os
-      << "cache_gbytes   " << m_cache_gbytes << std::endl
+  os      << "cache_gbytes   " << m_cache_gbytes << std::endl
       << "cache_bytes    " << m_cache_bytes << std::endl
       << "can_create     " << m_can_create << std::endl
       << "can_exist      " << m_can_exist << std::endl
@@ -123,7 +122,7 @@ std::string Bdb_db::to_string() {
   return m_bdb_db_config->to_string();
 }
 
-std::unique_ptr<Bdb_db::Bdb_db_config> Bdb_db::build(Bdb_errors &errors) {
+std::unique_ptr<Bdb_db::Bdb_db_config> Bdb_db::open(Bdb_errors &errors) {
   //bdb_open(errors);
   return std::move(m_bdb_db_config);
 }

@@ -14,7 +14,7 @@ int main() {
       .has_duplicates()
       .is_secondary()
       .truncate()
-      .build(errors);
+      .open(errors);
   std::cout << bdb_db->to_string() << std::endl;
   return EXIT_SUCCESS;
 }

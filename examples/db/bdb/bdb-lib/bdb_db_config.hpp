@@ -6,7 +6,6 @@
 
 #include <db_cxx.h>
 #include <iostream>
-//#include <ostream>
 #include <utility>
 #include <memory>
 #include "bdb_errors.hpp"
@@ -39,14 +38,14 @@ class Bdb_db {
     explicit Bdb_db_config(std::string filename) // ..., *Bdb_env)
         : db_(nullptr, 0),
           m_filename(std::move(filename)) {}
-    void close();
+    void close() noexcept;
     inline Db &get_db() { return db_; }
   };
 
   explicit Bdb_db(std::string filename);
   void bdb_open(Bdb_errors &errors);
   std::string to_string();
-  std::unique_ptr<Bdb_db_config> build(Bdb_errors &errors);
+  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
   Bdb_db &cache_gbytes(int m_cache_gbytes);
   Bdb_db &cache_bytes(int cache_bytes);
   Bdb_db &can_create();
