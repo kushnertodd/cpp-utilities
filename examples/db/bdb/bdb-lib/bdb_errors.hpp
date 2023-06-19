@@ -10,7 +10,6 @@
  */
 class Bdb_error {
  public:
-  static const std::string class_name;
   std::string module_name{};
   std::string id{};
   std::string message{};
@@ -18,6 +17,7 @@ class Bdb_error {
 
   Bdb_error() = default;
   Bdb_error(std::string module_name_, std::string id_, std::string message_, int db_errno_ = 0);
+  std::string class_name();
   [[nodiscard]] bool is_db_err() const;
   [[nodiscard]] json_object *to_json() const;
   [[nodiscard]] std::string to_string() const;
@@ -25,18 +25,17 @@ class Bdb_error {
 
 class Bdb_errors {
  public:
-  static const std::string class_name;
   int error_ct = 0;
   std::vector<Bdb_error> errors;
 
   Bdb_errors() = default;
-  void add(const std::string &
-  module_name,
+  void add(const std::string &module_name,
            const std::string &id,
            const std::string &message,
            int db_errno = 0
   );
   void check_exit(const std::string &message = "");
+  std::string class_name();
   [[nodiscard]] bool has() const;
   json_object *to_json();
   std::string to_string();

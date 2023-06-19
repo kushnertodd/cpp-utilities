@@ -24,8 +24,8 @@ class Bdb_db {
     int m_cache_gbytes{4};
     int m_cache_bytes{};
     bool m_can_create{false};
-    bool m_can_exist{false};
-    bool m_can_write{false};
+    bool m_must_exist{false};
+    bool m_read_only{false};
     std::string m_filename{};
     bool m_has_duplicates{false};
     bool m_is_secondary{false};
@@ -49,8 +49,8 @@ class Bdb_db {
   Bdb_db &cache_gbytes(int m_cache_gbytes);
   Bdb_db &cache_bytes(int cache_bytes);
   Bdb_db &can_create();
-  Bdb_db &can_exist();
-  Bdb_db &can_write();
+  Bdb_db &must_exist();
+  Bdb_db &read_only();
   Bdb_db &has_duplicates();
   Bdb_db &is_secondary();
   Bdb_db &truncate();

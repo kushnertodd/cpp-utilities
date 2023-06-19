@@ -5,8 +5,6 @@
 
 // Error methods
 
-const std::string Bdb_error::class_name = "Error";
-
 /**
  * adds error to error list
  * @param module
@@ -19,6 +17,10 @@ Bdb_error::Bdb_error(std::string module_, std::string id_, std::string message_,
     id(std::move(id_)),
     message(std::move(message_)),
     db_errno(db_errno_) {}
+
+std::string Bdb_error::class_name() {
+  return "Bdb_error";
+}
 
 bool Bdb_error::is_db_err() const {
   return db_errno < 0; // else is errno if > 0
@@ -52,8 +54,6 @@ std::string Bdb_error::to_string() const {
 
 // Bdb_errors methods
 
-const std::string Bdb_errors::class_name = "Bdb_errors";
-
 /**
  * adds error to error list
  * @param module_name
@@ -80,6 +80,11 @@ void Bdb_errors::check_exit(const std::string &message) {
     exit(1);
   }
 }
+
+std::string Bdb_errors::class_name() {
+  return "Bdb_errors";
+}
+
 /**
  * checks if error seen
  * @return
@@ -94,7 +99,7 @@ json_object *Bdb_errors::to_json() {
     return nullptr;
   }
   if (!has()) {
-    json_object_object_add(root, "class_name", json_object_new_string(Bdb_errors::class_name.c_str()));
+    json_object_object_add(root, "class_name", json_object_new_string(Bdb_errors::class_name().c_str()));
     json_object *names_json = json_object_new_array();
     json_object_object_add(root, "errors", names_json);
     for (const Bdb_error &error: errors) {
