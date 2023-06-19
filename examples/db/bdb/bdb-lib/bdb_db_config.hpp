@@ -18,6 +18,10 @@ class Bdb_db {
 
   class Bdb_db_config {
    public:
+    ~Bdb_db_config();
+    std::string to_string();
+
+   private:
     int m_cache_gbytes{4};
     int m_cache_bytes{};
     bool m_can_create{false};
@@ -27,15 +31,10 @@ class Bdb_db {
     bool m_has_duplicates{false};
     bool m_is_secondary{false};
     bool m_truncate{false};
-
-    ~Bdb_db_config();
-    std::string to_string();
-
-   private:
-    friend class Bdb_db;
-
     Db db_;
     u_int32_t m_c_flags{};
+
+    friend class Bdb_db;
 
     explicit Bdb_db_config(std::string filename) // ..., *Bdb_env)
         : db_(nullptr, 0),
