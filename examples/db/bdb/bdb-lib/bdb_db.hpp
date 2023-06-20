@@ -39,7 +39,6 @@ class Bdb_db {
         : db_(db_env, flags),
           m_filename(std::move(filename)) {}
     void close() noexcept;
-    inline Db &get_db() { return db_; }
   };
 
   explicit Bdb_db(std::string filename, DbEnv *db_env = nullptr, int flags = 0);
@@ -50,6 +49,7 @@ class Bdb_db {
   Bdb_db &cache_bytes(int cache_bytes);
   Bdb_db &can_create();
   Bdb_db &c_flags(int flags);
+  inline Db &get_db() { return m_bdb_db_config->db_; }
   Bdb_db &must_exist();
   Bdb_db &read_only();
   Bdb_db &has_duplicates();

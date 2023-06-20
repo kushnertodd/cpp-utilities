@@ -26,7 +26,7 @@ std::string Bdb_file_IO::comma_format(long num, int width) {
   return os.str();
 }
 
-void Bdb_file_IO::create_directory(std::string &dirname, Bdb_Errors &errors) {
+void Bdb_file_IO::create_directory(std::string &dirname, Bdb_errors &errors) {
   struct stat info{};
   if (stat(dirname.c_str(), &info) != 0) {
     int ret = mkdir(dirname.c_str(), 0755);
@@ -76,7 +76,7 @@ Bdb_File_IO_text_read::~Bdb_File_IO_text_read() {
   close();
 }
 
-Bdb_File_IO_text_read::Bdb_File_IO_text_read(std::string filename_, Bdb_Errors &errors)
+Bdb_File_IO_text_read::Bdb_File_IO_text_read(std::string filename_, Bdb_errors &errors)
     : filename(std::move(filename_)) {
   if (Bdb_global::debug)
     std::cout << "File_IO_text_read::open(" << Bdb_file_IO::to_string(filename) << ")" << std::endl;
@@ -88,14 +88,14 @@ void Bdb_File_IO_text_read::close() {
   in_file.close();
 }
 
-std::string Bdb_File_IO_text_read::getfile(Bdb_Errors &errors) {
+std::string Bdb_File_IO_text_read::getfile(Bdb_errors &errors) {
   std::stringstream strStream;
   // https://cplusplus.com/reference/ios/ios/rdbuf/
   strStream << in_file.rdbuf();
   return strStream.str();
 }
 
-bool Bdb_File_IO_text_read::getline(std::string &line, Bdb_Errors &errors) {
+bool Bdb_File_IO_text_read::getline(std::string &line, Bdb_errors &errors) {
   std::getline(in_file, line);
   const size_t buflen = 200;
   char buf[buflen];
@@ -117,7 +117,7 @@ bool Bdb_File_IO_text_read::getline(std::string &line, Bdb_Errors &errors) {
   return true;
 }
 
-void Bdb_File_IO_text_read::open(Bdb_Errors &errors) {
+void Bdb_File_IO_text_read::open(Bdb_errors &errors) {
   if (Bdb_global::debug)
     std::cout << "File_IO_text_read::open(" << Bdb_file_IO::to_string(filename) << ")" << std::endl;
   in_file.open(filename);
@@ -142,7 +142,7 @@ Bdb_File_IO_text_write::~Bdb_File_IO_text_write() {
   close();
 }
 
-Bdb_File_IO_text_write::Bdb_File_IO_text_write(std::string filename_, Bdb_Errors &errors)
+Bdb_File_IO_text_write::Bdb_File_IO_text_write(std::string filename_, Bdb_errors &errors)
     : filename(std::move(filename_)) {
   open(errors);
 }
@@ -153,7 +153,7 @@ void Bdb_File_IO_text_write::close() {
   out_file.close();
 }
 
-void Bdb_File_IO_text_write::open(Bdb_Errors &errors) {
+void Bdb_File_IO_text_write::open(Bdb_errors &errors) {
   if (Bdb_global::debug)
     std::cout << "File_IO_text_write::open(" << Bdb_file_IO::to_string(filename) << ")" << std::endl;
   out_file.open(filename, std::ios::out);
@@ -171,7 +171,7 @@ void Bdb_File_IO_text_write::open(Bdb_Errors &errors) {
   }
 }
 
-void Bdb_File_IO_text_write::putline(const std::string &line, Bdb_Errors &errors) {
+void Bdb_File_IO_text_write::putline(const std::string &line, Bdb_errors &errors) {
   out_file << line << std::endl;
 }
 

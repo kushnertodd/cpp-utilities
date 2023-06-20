@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <db_cxx.h>
 #include "bdb_db.hpp"
 #include "bdb_errors.hpp"
@@ -12,11 +13,11 @@ class Bdb_cursor {
   bool eof{};
 
   Bdb_cursor() = default;
-  ~Bdb_cusor{
-      cursorp->close();
+  ~Bdb_cursor() {
+    cursorp->close();
   }
 
-  Bdb_cursor(Bdb_db &cursor_db, Bdb_Errors &errors, DbTxn *txnid = nullptr) {
+  Bdb_cursor(Bdb_db &cursor_db, Bdb_errors &errors, DbTxn *txnid = nullptr) {
     // https://web.mit.edu/ghudson/dev/nokrb/third/db/docs/api_c/db_cursor.html
     int ret = cursor_db.get_db().cursor(txnid, &cursorp, 0);
     if (ret)
@@ -56,15 +57,15 @@ class Bdb_cursor {
   }
 
   void dto_get_set(K &bdb_key, T &bdb_dto, Bdb_errors &errors) {
-    size_t key_len = imdb_key.buffer_size();
+    size_t key_len = bdb_key.buffer_size();
     void *key_buf = std::malloc(key_len);
     std::memset(key_buf, '\0', key_len);
-    imdb_key.serialize(key_buf);
+    bdb_key.serialize(key_buf);
 
     Dbt key(key_buf, (u_int32_t) key_len);
     Dbt data;
     try {
-      int ret = cursorp->get(&key, &data, DB_set);
+      int ret = cursorp->get(&key, &data, DB_SET);
       if (ret == DB_NOTFOUND) {
         done = true;
         eof = true;
