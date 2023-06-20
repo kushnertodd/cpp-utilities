@@ -65,8 +65,9 @@ json_object *Imdb_request::process_load_name_request(Bdb_databases_config &bdb_d
   Primary_database_config primary_database_config;
   bdb_databases_config.select("name", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string text_file = arguments.at(0);
       Timer timer;
@@ -86,8 +87,9 @@ json_object *Imdb_request::process_load_principals_request(Bdb_databases_config 
   Primary_database_config primary_database_config;
   bdb_databases_config.select("principals", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database principals_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database principals_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string text_file = arguments.at(0);
       Timer timer;
@@ -107,8 +109,9 @@ json_object *Imdb_request::process_load_ratings_request(Bdb_databases_config &bd
   Primary_database_config primary_database_config;
   bdb_databases_config.select("ratings", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string text_file = arguments.at(0);
       Timer timer;
@@ -128,8 +131,9 @@ json_object *Imdb_request::process_load_title_request(Bdb_databases_config &bdb_
   Primary_database_config primary_database_config;
   bdb_databases_config.select("title", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string text_file = arguments.at(0);
       Timer timer;
@@ -175,8 +179,9 @@ json_object *Imdb_request::process_lookup_name_request(
   Primary_database_config primary_database_config;
   bdb_databases_config.select("name", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string name_id = arguments.at(0);
       Name_DTO name_dto;
@@ -200,8 +205,9 @@ json_object *Imdb_request::process_lookup_ratings_request(
   Primary_database_config primary_database_config;
   bdb_databases_config.select("ratings", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string ratings_id = arguments.at(0);
       Ratings_DTO ratings_dto;
@@ -225,8 +231,9 @@ json_object *Imdb_request::process_lookup_title_request(
   Primary_database_config primary_database_config;
   bdb_databases_config.select("title", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       std::string title_id = arguments.at(0);
       Title_DTO title_dto;
@@ -297,9 +304,10 @@ json_object *Imdb_request::process_search_name_request(
   Primary_database_config name_primary_database_config;
   bdb_databases_config.select("name", name_primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database name_db(name_primary_database_config, imdb_bdb_key_extractor, errors);
-    Primary_database principals_db(principals_primary_database_config, imdb_bdb_key_extractor, errors);
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database name_db(name_primary_database_config, imdb_bdb_key_extractor.get(), errors);
+    Primary_database principals_db(principals_primary_database_config, imdb_bdb_key_extractor.get(), errors);
     Secondary_database principals_title_id_sdb(principals_title_id_secondary_database_config, errors);
     if (!errors.has()) {
       std::string title_id = arguments.at(0);
@@ -336,9 +344,10 @@ json_object *Imdb_request::process_search_title_request(
   Primary_database_config title_primary_database_config;
   bdb_databases_config.select("title", title_primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database title_db(title_primary_database_config, imdb_bdb_key_extractor, errors);
-    Primary_database principals_db(principals_primary_database_config, imdb_bdb_key_extractor, errors);
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database title_db(title_primary_database_config, imdb_bdb_key_extractor.get(), errors);
+    Primary_database principals_db(principals_primary_database_config, imdb_bdb_key_extractor.get(), errors);
     Secondary_database principals_name_id_sdb(principals_name_id_secondary_database_config, errors);
     if (!errors.has()) {
       std::string name_id = arguments.at(0);
@@ -383,9 +392,10 @@ json_object *Imdb_request::process_search_title_tripthongs_request(
           Title_tripthongs_DAO::search(title_tripthongs_db.bdb_db, title_db.bdb_db,
                                        primaryTitle, errors);
       // TODO: convert principals list to name list
+        }
       }
     }
-  }}
+  }
   return nullptr;
 }
 
@@ -394,8 +404,9 @@ json_object *Imdb_request::process_select_name_request(Bdb_databases_config &bdb
   Primary_database_config primary_database_config;
   bdb_databases_config.select("name", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database name_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       Name_DTO_list name_dto_list;
       Name_DAO_list::select(name_db.bdb_db, name_dto_list, errors);
@@ -415,8 +426,9 @@ json_object *Imdb_request::process_select_principals_request(Bdb_databases_confi
   Primary_database_config primary_database_config;
   bdb_databases_config.select("principals", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database principals_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database principals_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       Principals_DTO_list principals_dto_list;
       Principals_DAO_list::select(principals_db.bdb_db, principals_dto_list, errors);
@@ -436,8 +448,9 @@ json_object *Imdb_request::process_select_ratings_request(Bdb_databases_config &
   Primary_database_config primary_database_config;
   bdb_databases_config.select("ratings", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database ratings_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       Ratings_DTO_list ratings_dto_list;
       Ratings_DAO_list::select(ratings_db.bdb_db, ratings_dto_list, errors);
@@ -457,8 +470,9 @@ json_object *Imdb_request::process_select_title_request(Bdb_databases_config &bd
   Primary_database_config primary_database_config;
   bdb_databases_config.select("title", primary_database_config, errors);
   if (!errors.has()) {
-    auto *imdb_bdb_key_extractor = new Imdb_bdb_key_extractor();
-    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor, errors);;
+    std::unique_ptr<Bdb_key_extractor> imdb_bdb_key_extractor =
+        std::make_unique<Imdb_bdb_key_extractor>();
+    Primary_database title_db(primary_database_config, imdb_bdb_key_extractor.get(), errors);;
     if (!errors.has()) {
       Title_DTO_list title_dto_list;
       Title_DAO_list::select(title_db.bdb_db, title_dto_list, errors);
