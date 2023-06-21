@@ -13,9 +13,19 @@
 
 enum class Bdb_DAO_function { read, write };
 
-template<typename T, typename K>
+template<typename K, typename T, typename L>
 class Bdb_DAO {
  public:
+  /**
+   * @brief load and save data DTOs from delimited text file records
+   * @param bdb_db database handle
+   * @param text_file delimited file, fields match data DTO T
+   * @param errors invalid text file, bdb save failure
+   * @param delimiter file record separator
+   * @return record count
+   * @precondition data DTO T has a constructor T(int cout, std::string line, errors, delimiter)
+   * @precondition key DTO K has a constructor K(data DTO T)
+   */
   static int load(Bdb_db &bdb_db, const std::string &text_file, Bdb_errors &errors, char delimiter = tab) {
     int count{};
     Bdb_File_IO_text_read fread(text_file, errors);
@@ -24,92 +34,94 @@ class Bdb_DAO {
       for (count = 0; fread.getline(line, errors) && !errors.has(); count++) {
         Bdb_file_IO::progress(count);
         if (count > 0) {
-          T dto(count, line, errors, delimiter);
-          save(bdb_db, dto, errors);
+          T bdb_data_dto(count, line, errors, delimiter);
+          K bdb_key_dto(bdb_data_dto);
+          save(bdb_db, bdb_key_dto, bdb_data_dto, errors);
         }
       }
     }
     return count;
   }
 
-  static void lookup(Bdb_db &bdb_db, K &bdb_key, T &bdb_dto, Bdb_errors &errors) {
-    size_t key_len = bdb_key.buffer_size();
-    void *key_buf = std::malloc(key_len);
-    std::memset(key_buf, '\0', key_len);
-    bdb_key.serialize(key_buf);
-
-    Dbt key(key_buf, (u_int32_t) key_len);
-    Dbt data;
+  /**
+   * @brief lookup data DTO T from key DTO K
+   * @param bdb_db database handle
+   * @param bdb_key_dto key DTO for data DTO record
+   * @param bdb_data_dto found data DTO record
+   * @param errors includes key not found, read error, or bdb exception
+   */
+  static void lookup(Bdb_db &bdb_db, K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors) {
+    Bdb_dbt<K, T, L> bdb_key_dbt{bdb_key_dto};
+    Bdb_dbt<K, T, L> bdb_dbt_data{};
     try {
-      int ret = bdb_db.get_db().get(nullptr, &key, &data, 0);
+      int ret = bdb_db.get_db().get(nullptr, &bdb_key_dbt.get_key_dbt(), &bdb_dbt_data.data_dbt, 0);
       if (ret == DB_NOTFOUND)
-        errors.add("Bdb_DAO::lookup", "1", "key not found");
+        errors.add("Bdb_DAO::lookup", "1", "key not found in database " + bdb_db.to_string());
       else if (ret)
-        errors.add("Bdb_DAO::lookup", "2", "read error", ret);
+        errors.add("Bdb_DAO::lookup", "2", "read error in database " + bdb_db.to_string(), ret);
       else
-        bdb_dto.deserialize(data.get_data());
+        bdb_dbt_data.set_data_dto(bdb_data_dto);
     }
     catch (DbException &e) {
-      errors.add("Bdb_DAO::lookup", "3", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::lookup",
+                 "3",
+                 "Error writing in database " + bdb_db.to_string() + ": " + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Bdb_DAO::lookup", "4", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::lookup",
+                 "4",
+                 "Error writing in database " + bdb_db.to_string() + ": " + std::string(e.what()));
     }
-    free(key_buf);
   }
 
-  static void save(Bdb_db &bdb_db, K &bdb_key, T &bdb_dto, Bdb_errors &errors, bool no_overwrite = false) {
-    size_t key_len = bdb_key.buffer_size();
-    void *key_buf = std::malloc(key_len);
-    std::memset(key_buf, '\0', key_len);
-    bdb_key.serialize(key_buf);
-
-    size_t buffer_len = bdb_dto.buffer_size();
-    void *buffer = std::malloc(buffer_len);
-    std::memset(buffer, '\0', buffer_len);
-    bdb_dto.serialize(buffer);
-
-    Dbt key(key_buf, (u_int32_t) key_len);
-    Dbt data(buffer, (u_int32_t) buffer_len);
+  static void save(Bdb_db &bdb_db, K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors, bool no_overwrite = false) {
+    Bdb_dbt<K, T, L> bdb_key_dbt{bdb_key_dto};
+    Bdb_dbt<K, T, L> bdb_dbt_data{bdb_data_dto};
 
     try {
-      int ret = bdb_db.get_db().put(nullptr, &key, &data, 0);
+      int ret = bdb_db.get_db().put(nullptr, &bdb_key_dbt.key_dto, &bdb_dbt_data.data_dtoa, 0);
       if (ret) {
-        if (ret == DB_KEYEXIST && no_overwrite)
-          errors.add("Bdb_DAO::save", "1", "key exists", ret);
-        else errors.add("Bdb_DAO::save", "1", "write error", ret);
+        if (ret != DB_KEYEXIST)
+          errors.add("Bdb_DAO::save", "1", "write error in database " + bdb_db.to_string(), ret);
+        else if (no_overwrite)
+          errors.add("Bdb_DAO::save", "2", "key exists in database " + bdb_db.to_string(), ret);
       }
     }
     catch (DbException &e) {
-      errors.add("Bdb_DAO::save", "3", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::save", "3", "Error writing in database " + bdb_db.to_string() + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Bdb_DAO::save", "4", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::save", "4", "Error writing in database " + bdb_db.to_string() + std::string(e.what()));
     }
-    free(key_buf);
-    free(buffer);
   }
 };
 
-template<typename K, typename L>
+template<typename K, typename T, typename L>
 class Bdb_DAO_list {
  public:
-  static void select_all(Bdb_db &bdb_db, L &bdb_dto_list, Bdb_errors &errors) {
-    Bdb_cursor bdb_cursor(bdb_db, errors);
+  static void select_all(Bdb_db &bdb_db, L &bdb_data_dto_list, Bdb_errors &errors) {
+    Bdb_cursor<K, T, L> bdb_cursor(bdb_db, errors);
     if (!errors.has()) {
       K bdb_key;
-      L bdb_dto_list;
-      for (bdb_cursor.dto_list_get_first(bdb_key, bdb_dto_list, errors);
-           !bdb_cursor.done();
-           bdb_cursor.dto_list_get_next(bdb_key, bdb_dto_list, errors));
+      for (bdb_cursor.dto_list_get_first(bdb_key, bdb_data_dto_list, errors);
+           !bdb_cursor.is_done();
+           bdb_cursor.dto_list_get_next(bdb_key, bdb_data_dto_list, errors));
     }
   }
-  static void select_all_key(Bdb_db &bdb_db, K &bdb_key, L &bdb_dto_list, Bdb_errors &errors) {
-    Bdb_cursor bdb_cursor(bdb_db, errors);
+
+  /**
+   * select all database records starting with key
+   * @param bdb_db database handle
+   * @param bdb_key key for first record
+   * @param bdb_data_dto_list read data DTO list
+   * @param errors 
+   */
+  static void select_all_key(Bdb_db &bdb_db, K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors) {
+    Bdb_cursor<K, T, L> bdb_cursor(bdb_db, errors);
     if (!errors.has()) {
-      for (bdb_cursor.dto_list_get_key(bdb_key, bdb_dto_list, errors);
+      for (bdb_cursor.dto_list_get_key(bdb_key_dto, bdb_data_dto_list, errors);
            !bdb_cursor.done();
-           bdb_cursor.dto_list_get_next(bdb_key, bdb_dto_list, errors));
+           bdb_cursor.dto_list_get_next(bdb_key_dto, bdb_data_dto_list, errors));
     }
   }
 };

@@ -9,7 +9,7 @@ if (PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
     message(FATAL_ERROR "In-source builds are not allowed")
 endif ()
 
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/module/")
 
 
@@ -17,9 +17,23 @@ include_directories(bdb-lib)
 #include_directories(imdb-lib)
 include_directories(util-lib)
 
+include(UseDoxygenDoc)
+
 add_subdirectory(bdb-lib)
 #add_subdirectory(imdb-lib)
 add_subdirectory(util-lib)
+
+add_doxygen_doc(
+        BUILD_DIR
+        ${CMAKE_CURRENT_BINARY_DIR}/_build
+        DOXY_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
+        TARGET_NAME
+        docs
+        COMMENT
+        "HTML documentation"
+)
+
 
 ## link libs
 
@@ -53,5 +67,14 @@ target_link_libraries(bdb_db_config_test
         PUBLIC ${JSON-C_LIBRARIES}
         )
 
-#include(Doxygen)
-#Doxygen(src docs)
+
+#add_custom_target(${DOXY_DOC_TARGET_NAME}
+#  COMMAND
+#    ${DOXYGEN_EXECUTABLE} Doxyfile
+#  WORKING_DIRECTORY
+#    ${DOXY_DOC_BUILD_DIR}
+#  COMMENT
+#    "Building ${DOXY_DOC_COMMENT} with Doxygen"
+#VERBATIM
+#  )
+#message(STATUS "Added ${DOXY_DOC_TARGET_NAME} [Doxygen] target to build documentation")

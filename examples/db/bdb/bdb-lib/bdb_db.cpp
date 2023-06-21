@@ -2,7 +2,6 @@
 // Created by kushn on 6/18/2023.
 //
 
-#include <sstream>
 #include <utility>
 #include "bdb_db.hpp"
 
@@ -28,17 +27,7 @@ void Bdb_db::Bdb_db_config::close() noexcept {
 }
 
 std::string Bdb_db::Bdb_db_config::to_string() {
-  std::ostringstream os;
-  os << "cache_gbytes   " << m_cache_gbytes << std::endl
-     << "cache_bytes    " << m_cache_bytes << std::endl
-     << "can_create     " << m_can_create << std::endl
-     << "must_exist     " << m_must_exist << std::endl
-     << "read_only      " << m_read_only << std::endl
-     << "filename       " << m_filename << std::endl
-     << "has_duplicates " << m_has_duplicates << std::endl
-     << "is_secondary   " << m_is_secondary << std::endl
-     << "truncate       " << m_truncate << std::endl;
-  return os.str();
+  return "filename " + m_filename;
 }
 
 // Bdb_db methods

@@ -43,17 +43,17 @@ class Bdb_db {
 
   explicit Bdb_db(std::string filename, DbEnv *db_env = nullptr, int flags = 0);
   void bdb_open(Bdb_errors &errors);
-  std::string to_string();
-  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
-  Bdb_db &cache_gbytes(int m_cache_gbytes);
-  Bdb_db &cache_bytes(int cache_bytes);
-  Bdb_db &can_create();
   Bdb_db &c_flags(int flags);
+  Bdb_db &cache_bytes(int cache_bytes);
+  Bdb_db &cache_gbytes(int m_cache_gbytes);
+  Bdb_db &can_create();
   inline Db &get_db() { return m_bdb_db_config->db_; }
-  Bdb_db &must_exist();
-  Bdb_db &read_only();
   Bdb_db &has_duplicates();
   Bdb_db &is_secondary();
+  Bdb_db &must_exist();
+  Bdb_db &read_only();
+  std::unique_ptr<Bdb_db_config> open(Bdb_errors &errors);
+  std::string to_string();
   Bdb_db &truncate();
 
  private:
