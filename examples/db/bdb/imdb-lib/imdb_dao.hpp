@@ -16,10 +16,10 @@
 #include "serialization.hpp"
 #include "bdb_tokens.hpp"
 
-enum class Imdb_DAO_function { read, write };
+enum class Bdb_DAO_function { read, write };
 
 template<typename T, typename K>
-class Imdb_DAO {
+class Bdb_DAO {
  public:
   static int load(Bdb_db &imdb_db, const std::string &text_file, Bdb_errors &errors, char delimiter = tab) {
     int count{};
@@ -49,17 +49,17 @@ class Imdb_DAO {
       Dbt data;
       int ret = imdb_db.get_db().get(nullptr, &key, &data, 0);
       if (ret == DB_NOTFOUND)
-        errors.add("Imdb_DAO::lookup", "1", "key not found");
+        errors.add("Bdb_DAO::lookup", "1", "key not found");
       else if (ret)
-        errors.add("Imdb_DAO::lookup", "2", "read error", ret);
+        errors.add("Bdb_DAO::lookup", "2", "read error", ret);
       else
         imdb_dto.deserialize(data.get_data());
     }
     catch (DbException &e) {
-      errors.add("Imdb_DAO::lookup", "3", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::lookup", "3", "Error writing file " + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Imdb_DAO::lookup", "4", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::lookup", "4", "Error writing file " + std::string(e.what()));
     }
     free(key_buf);
   }
@@ -84,15 +84,15 @@ class Imdb_DAO {
 
       int ret = imdb_db.get_db().put(nullptr, &key, &data, 0);
       if (ret && ret != DB_KEYEXIST)
-        errors.add("Imdb_DAO::save", "1", "write error", ret);
+        errors.add("Bdb_DAO::save", "1", "write error", ret);
       else if (ret)
         ret = ret + 0;
     }
     catch (DbException &e) {
-      errors.add("Imdb_DAO::save", "3", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::save", "3", "Error writing file " + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Imdb_DAO::save", "4", "Error writing file " + std::string(e.what()));
+      errors.add("Bdb_DAO::save", "4", "Error writing file " + std::string(e.what()));
     }
     free(key_buf);
     free(buffer);
@@ -100,7 +100,7 @@ class Imdb_DAO {
 };
 
 template<typename K, typename L>
-class Imdb_DAO_list {
+class Bdb_DAO_list {
  public:
   static void select(Bdb_db &imdb_db, L &imdb_dto_list, Bdb_errors &errors) {
     Dbc *cursorp;
@@ -108,7 +108,7 @@ class Imdb_DAO_list {
     try {
       int ret = imdb_db.get_db().cursor(nullptr, &cursorp, 0);
       if (ret)
-        errors.add("Imdb_DAO::select", "1", "error creating cursor", ret);
+        errors.add("Bdb_DAO::select", "1", "error creating cursor", ret);
       else {
         // Position the cursor to the first record in the secondary database that has the appropriate key.
         Dbt data;
@@ -119,16 +119,16 @@ class Imdb_DAO_list {
           imdb_dto_list.list.emplace_back(data.get_data());
         }
         if (ret && ret != DB_NOTFOUND) {
-          errors.add("Imdb_DAO::select", "2", " select error", ret);
+          errors.add("Bdb_DAO::select", "2", " select error", ret);
         }
         cursorp->close();
       }
     }
     catch (DbException &e) {
-      errors.add("Imdb_DAO::select", "3", " error: " + std::string(e.what()));
+      errors.add("Bdb_DAO::select", "3", " error: " + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Imdb_DAO::select", "4", " error: " + std::string(e.what()));
+      errors.add("Bdb_DAO::select", "4", " error: " + std::string(e.what()));
     }
   }
 };
@@ -138,7 +138,7 @@ template<
     typename R,
     typename S,
     typename L>
-class Imdb_DAO_search {
+class Bdb_DAO_search {
  public:
   static void search(Bdb_db &imdb_db,
                      Bdb_db &principals_db,
@@ -166,32 +166,32 @@ class Imdb_DAO_search {
              ret = cursorp->get(&key, &data, DB_NEXT_DUP)) {
           Principals_DTO principals_lookup_dto;
           Principals_DTO_key principals_lookup_key(data.get_data());
-          Imdb_DAO<Principals_DTO, Principals_DTO_key>::lookup(principals_db,
-                                                               principals_lookup_dto,
-                                                               principals_lookup_key,
-                                                               errors);
+          Bdb_DAO<Principals_DTO, Principals_DTO_key>::lookup(principals_db,
+                                                              principals_lookup_dto,
+                                                              principals_lookup_key,
+                                                              errors);
           if (!errors.has()) {
             R imdb_lookup_dto;
             S imdb_lookup_key(principals_lookup_dto);
-            Imdb_DAO<R, S>::lookup(imdb_db,
-                                   imdb_lookup_dto,
-                                   imdb_lookup_key,
-                                   errors);
+            Bdb_DAO<R, S>::lookup(imdb_db,
+                                  imdb_lookup_dto,
+                                  imdb_lookup_key,
+                                  errors);
             if (!errors.has())
               imdb_dto_list.list.emplace_back(imdb_lookup_dto);
           }
         }
         if (ret && ret != DB_NOTFOUND) {
-          errors.add("Imdb_DAO<T, K>::search", "2", imdb_key.to_string() + " search error: ", ret);
+          errors.add("Bdb_DAO<T, K>::search", "2", imdb_key.to_string() + " search error: ", ret);
         }
         cursorp->close();
       }
     }
     catch (DbException &e) {
-      errors.add("Imdb_DAO<T, K>::search", "3", imdb_key.to_string() + " search error: " + std::string(e.what()));
+      errors.add("Bdb_DAO<T, K>::search", "3", imdb_key.to_string() + " search error: " + std::string(e.what()));
     }
     catch (std::exception &e) {
-      errors.add("Imdb_DAO<T, K>::search", "4", imdb_key.to_string() + " search error: " + std::string(e.what()));
+      errors.add("Bdb_DAO<T, K>::search", "4", imdb_key.to_string() + " search error: " + std::string(e.what()));
     }
     free(key_buf);
   }

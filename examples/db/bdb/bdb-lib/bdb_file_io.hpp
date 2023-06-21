@@ -5,6 +5,7 @@
 #include <sstream>
 #include "bdb_errors.hpp"
 
+const char tab = '\t';
 class comma_numpunct : public std::numpunct<char> {
  protected:
   char do_thousands_sep() const override {
