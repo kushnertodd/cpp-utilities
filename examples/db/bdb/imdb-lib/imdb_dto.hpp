@@ -6,7 +6,7 @@
 #include "serializable.hpp"
 #include "bdb_tokens.hpp"
 
-/**
+/*!
  * Interface for DTOs. Do not actually inherit because constructors
  * must call from_json() and parse(), and calling virtual functions
  * is not safe/advisable.

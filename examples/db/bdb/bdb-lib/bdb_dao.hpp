@@ -16,15 +16,15 @@ enum class Bdb_DAO_function { read, write };
 template<typename K, typename T, typename L>
 class Bdb_DAO {
  public:
-  /**
-   * @brief load and save data DTOs from delimited text file records
-   * @param bdb_db database handle
-   * @param text_file delimited file, fields match data DTO T
-   * @param errors invalid text file, bdb save failure
-   * @param delimiter file record separator
-   * @return record count
-   * @precondition data DTO T has a constructor T(int cout, std::string line, errors, delimiter)
-   * @precondition key DTO K has a constructor K(data DTO T)
+  /*!
+   * \brief load and save data DTOs from delimited text file records
+   * \param bdb_db database handle
+   * \param text_file delimited file, fields match data DTO T
+   * \param errors invalid text file, bdb save failure
+   * \param delimiter file record separator
+   * \return record count
+   * \precondition data DTO T has a constructor T(int cout, std::string line, errors, delimiter)
+   * \precondition key DTO K has a constructor K(data DTO T)
    */
   static int load(Bdb_db &bdb_db, const std::string &text_file, Bdb_errors &errors, char delimiter = tab) {
     int count{};
@@ -43,12 +43,12 @@ class Bdb_DAO {
     return count;
   }
 
-  /**
-   * @brief lookup data DTO T from key DTO K
-   * @param bdb_db database handle
-   * @param bdb_key_dto key DTO for data DTO record
-   * @param bdb_data_dto found data DTO record
-   * @param errors includes key not found, read error, or bdb exception
+  /*!
+   * \brief lookup data DTO T from key DTO K
+   * \param bdb_db database handle
+   * \param bdb_key_dto key DTO for data DTO record
+   * \param bdb_data_dto found data DTO record
+   * \param errors includes key not found, read error, or bdb exception
    */
   static void lookup(Bdb_db &bdb_db, K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors) {
     Bdb_dbt<K, T, L> bdb_key_dbt{bdb_key_dto};
@@ -74,12 +74,12 @@ class Bdb_DAO {
     }
   }
 
-  static void save(Bdb_db &bdb_db, K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors, bool no_overwrite = false) {
+  static void save(Bdb_db &bdb_db, K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors, bool no_overwrite = false, DbTxn* txnid = nullptr) {
     Bdb_dbt<K, T, L> bdb_key_dbt{bdb_key_dto};
     Bdb_dbt<K, T, L> bdb_dbt_data{bdb_data_dto};
 
     try {
-      int ret = bdb_db.get_db().put(nullptr, &bdb_key_dbt.key_dto, &bdb_dbt_data.data_dtoa, 0);
+      int ret = bdb_db.get_db().put(txnid, &bdb_key_dbt.key_dto, &bdb_dbt_data.data_dtoa, 0);
       if (ret) {
         if (ret != DB_KEYEXIST)
           errors.add("Bdb_DAO::save", "1", "write error in database " + bdb_db.to_string(), ret);
@@ -102,19 +102,19 @@ class Bdb_DAO_list {
   static void select_all(Bdb_db &bdb_db, L &bdb_data_dto_list, Bdb_errors &errors) {
     Bdb_cursor<K, T, L> bdb_cursor(bdb_db, errors);
     if (!errors.has()) {
-      K bdb_key;
-      for (bdb_cursor.dto_list_get_first(bdb_key, bdb_data_dto_list, errors);
+      K bdb_key_dto;
+      for (bdb_cursor.dto_list_get_first(bdb_key_dto, bdb_data_dto_list, errors);
            !bdb_cursor.is_done();
-           bdb_cursor.dto_list_get_next(bdb_key, bdb_data_dto_list, errors));
+           bdb_cursor.dto_list_get_next(bdb_key_dto, bdb_data_dto_list, errors));
     }
   }
 
   /**
    * select all database records starting with key
-   * @param bdb_db database handle
-   * @param bdb_key key for first record
-   * @param bdb_data_dto_list read data DTO list
-   * @param errors 
+   * \param bdb_db database handle
+   * \param bdb_key key for first record
+   * \param bdb_data_dto_list read data DTO list
+   * \param errors
    */
   static void select_all_key(Bdb_db &bdb_db, K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors) {
     Bdb_cursor<K, T, L> bdb_cursor(bdb_db, errors);

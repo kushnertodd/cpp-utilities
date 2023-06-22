@@ -40,9 +40,10 @@ class Bdb_cursor {
   }
 
   void dto_get(K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors, int flags) {
-    Bdb_dbt<K, T, L> bdb_dbt{};
+    Bdb_dbt<K, T, L> bdb_key_dbt{};
+    Bdb_dbt<K, T, L> bdb_data_dbt{};
     try {
-      int ret = cursorp->get(&bdb_dbt.get_key_dbt(), &bdb_dbt.get_data_dbt(), flags);
+      int ret = cursorp->get(&bdb_key_dbt.get_dbt(), &bdb_data_dbt.get_dbt(), flags);
       if (ret == DB_NOTFOUND) {
         done = true;
         eof = true;
@@ -50,8 +51,8 @@ class Bdb_cursor {
         done = true;
         errors.add("Bdb_cursor::get_first", "2", " select error in database " + bdb_db.to_string(), ret);
       } else {
-        bdb_dbt.set_key_dto(bdb_key_dto);
-        bdb_dbt.set_data_dto(bdb_data_dto);
+        bdb_key_dbt.set_dto(bdb_key_dto);
+        bdb_data_dbt.set_dto_list(bdb_data_dto);
       }
     }
     catch (DbException &e) {
@@ -71,10 +72,11 @@ class Bdb_cursor {
   }
 
   void dto_list_get(K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors, int flags) {
-    Bdb_dbt<K, T, L> bdb_dbt{};
+    Bdb_dbt<K, T, L> bdb_key_dbt{};
+    Bdb_dbt<K, T, L> bdb_data_dbt{};
 
     try {
-      int ret = cursorp->get(&bdb_dbt.get_key_dbt(), &bdb_dbt.get_data_dbt(), flags);
+      int ret = cursorp->get(&bdb_key_dbt.get_dbt(), &bdb_data_dbt.get_dbt(), flags);
       if (ret == DB_NOTFOUND) {
         done = true;
         eof = true;
@@ -82,8 +84,8 @@ class Bdb_cursor {
         done = true;
         errors.add("Bdb_cursor::get_first", "2", " select error in database " + bdb_db.to_string(), ret);
       } else {
-        bdb_dbt.set_key_dto(bdb_key_dto);
-        bdb_dbt.set_data_dto_list(bdb_data_dto_list);
+        bdb_key_dbt.set_key_dto(bdb_key_dto);
+        bdb_data_dbt.set_data_dto_list(bdb_data_dto_list);
       }
     }
     catch (DbException &e) {
@@ -103,9 +105,10 @@ class Bdb_cursor {
   }
 
   void dto_get_set(K &bdb_key_dto, T &bdb_data_dto, Bdb_errors &errors) {
-    Bdb_dbt<K, T, L> bdb_dbt{};
+    Bdb_dbt<K, T, L> bdb_key_dbt{};
+    Bdb_dbt<K, T, L> bdb_data_dbt{};
     try {
-      int ret = cursorp->get(&bdb_dbt.bdb_key_dbt, &bdb_dbt.bdb_data_dbt, DB_SET);
+      int ret = cursorp->get(&bdb_key_dbt.get_dbt(), &bdb_data_dbt.get_dbt(), DB_SET);
       if (ret == DB_NOTFOUND) {
         done = true;
         eof = true;
@@ -113,7 +116,7 @@ class Bdb_cursor {
         done = true;
         errors.add("Bdb_cursor::get_first", "2", " select error in database " + bdb_db.to_string(), ret);
       } else
-        bdb_dbt.set_data_dto(bdb_data_dto);
+        bdb_data_dbt.set_dto_list(bdb_data_dto);
     }
     catch (DbException &e) {
       errors.add("Imdb_DAO::lookup", "3", "Error writing in database " + bdb_db.to_string() + std::string(e.what()));
@@ -124,9 +127,10 @@ class Bdb_cursor {
   }
 
   void dto_list_get_set(K &bdb_key_dto, L &bdb_data_dto_list, Bdb_errors &errors) {
-    Bdb_dbt<K, T, L> bdb_dbt{};
+    Bdb_dbt<K, T, L> bdb_key_dbt{};
+    Bdb_dbt<K, T, L> bdb_data_dbt{};
     try {
-      int ret = cursorp->get(&bdb_dbt.key_dto, &bdb_dbt.data_dto, DB_SET);
+      int ret = cursorp->get(&bdb_key_dbt.get_dbt(), &bdb_data_dbt.get_dbt(), DB_SET);
       if (ret == DB_NOTFOUND) {
         done = true;
         eof = true;
@@ -134,7 +138,7 @@ class Bdb_cursor {
         done = true;
         errors.add("Bdb_cursor::dto_list_get_set", "2", " select error in database " + bdb_db.to_string(), ret);
       } else {
-        bdb_dbt.set_data_dto_list(bdb_data_dto_list);
+        bdb_data_dbt.set_dto_list(bdb_data_dto_list);
       }
     }
     catch (DbException &e) {

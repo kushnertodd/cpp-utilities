@@ -4,7 +4,7 @@
 #include <json-c/json.h>
 #include <vector>
 
-/**
+/*!
  * Error module
  * Includes calling module, message id, and message text
  */

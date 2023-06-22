@@ -1,19 +1,19 @@
 #include "bdb_errors.hpp"
 #include "misc_utils.hpp"
 
-/**
+/*!
  * determine character for Ascii code
- * @param n to convert
- * @return C char
+ * \param n to convert
+ * \return C char
  */
 char Misc_utils::ascii_to_char(int n) {
   return char(n);
 }
 
-/**
+/*!
  * convert C char to string
- * @param c to convert
- * @return c++ string
+ * \param c to convert
+ * \return c++ string
  */
 std::string Misc_utils::char_to_string(char c) {
   std::string s(1, c);

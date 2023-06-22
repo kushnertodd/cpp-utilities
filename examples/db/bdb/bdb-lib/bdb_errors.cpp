@@ -5,12 +5,12 @@
 
 // Error methods
 
-/**
+/*!
  * adds error to error list
- * @param module
- * @param id
- * @param message
- * @param db_errno return from Berkeley DB routine, <0 = db error, >0 = error, 0 = normal
+ * \param module
+ * \param id
+ * \param message
+ * \param db_errno return from Berkeley DB routine, <0 = db error, >0 = error, 0 = normal
  */
 Bdb_error::Bdb_error(std::string module_, std::string id_, std::string message_, int db_errno_) :
     module_name(std::move(module_)),
@@ -54,11 +54,11 @@ std::string Bdb_error::to_string() const {
 
 // Bdb_errors methods
 
-/**
+/*!
  * adds error to error list
- * @param module_name
- * @param id
- * @param message
+ * \param module_name
+ * \param id
+ * \param message
  */
 void Bdb_errors::add(const std::string &module_name,
                      const std::string &id,
@@ -68,9 +68,9 @@ void Bdb_errors::add(const std::string &module_name,
   errors.emplace_back(module_name, id, message, db_errno);
 }
 
-/**
+/*!
  * checks for error and exits
- * @param message
+ * \param message
  */
 void Bdb_errors::check_exit(const std::string &message) {
   if (error_ct > 0) {
@@ -85,9 +85,9 @@ std::string Bdb_errors::class_name() {
   return "Bdb_errors";
 }
 
-/**
+/*!
  * checks if error seen
- * @return
+ * \return
  */
 bool Bdb_errors::has() const {
   return error_ct != 0;
@@ -116,9 +116,9 @@ json_object *Bdb_errors::to_json() {
   }
 }
 
-/**
+/*!
  * convert to error list
- * @return
+ * \return
  */
 std::string Bdb_errors::to_string() {
   std::ostringstream os;
