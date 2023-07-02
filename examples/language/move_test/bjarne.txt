@@ -1,0 +1,97 @@
+--initialization--
+A a1;
+  A(): i=1 s='A' t=''
+A a2(2);
+  A(int i_): i=2 s='A' t=''
+A a3(a2);
+  A(const A &a): i=2 s='A' t=''
+A a4(std::move(a3));
+  A(A &&a): i=2 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=2 s='' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+--vector--
+std::vector<A> v1{1,2};
+  A(int i_): i=1 s='A' t=''
+  A(int i_): i=2 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+std::vector<A> v2 = {1,2};
+  A(int i_): i=1 s='A' t=''
+  A(int i_): i=2 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+std::vector<A> v3(v11);
+std::vector<A> v23{v11};
+std::vector<A> v12(std::move(v11));
+std::vector<A> v9{1,2};
+  A(int i_): i=1 s='A' t=''
+  A(int i_): i=2 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+std::vector<A> v4;
+for (const A& a: v9) v4.push_back (a);
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  ~A(): i=1 s='A' t=''
+for (const A& a: v9) v4.push_back (std::move(a));
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+for (const A& a: v9) v4.emplace_back (a);
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+for (const A& a: v9) v4.emplace_back (std::move(a));
+  A(const A &a): i=1 s='A' t=''
+  A(const A &a): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+  ~A(): i=1 s='A' t=''
+  ~A(): i=2 s='A' t=''
+for (j : {5, 6}) v5.emplace_back (j);
+  A(int i_): i=5 s='A' t=''
+  A(int i_): i=6 s='A' t=''
+  A(const A &a): i=5 s='A' t=''
+  ~A(): i=5 s='A' t=''
+  ~A(): i=5 s='A' t=''
+  ~A(): i=6 s='A' t=''
+for (j : {7, 8}) v14.push_back (A(j));
+  A(int i_): i=7 s='A' t=''
+  A(A &&a): i=7 s='A' t=''
+  ~A(): i=7 s='' t=''
+  A(int i_): i=8 s='A' t=''
+  A(A &&a): i=8 s='A' t=''
+  A(const A &a): i=7 s='A' t=''
+  ~A(): i=7 s='A' t=''
+  ~A(): i=8 s='' t=''
+  ~A(): i=7 s='A' t=''
+  ~A(): i=8 s='A' t=''
